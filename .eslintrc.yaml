@@ -1,0 +1,137 @@
+# ESLint Configuration file
+
+root: true
+
+parser: '@typescript-eslint/parser'
+
+extends:
+  # https://www.npmjs.com/package/eslint-config-airbnb
+  - 'airbnb'
+  # https://eslint.org/docs/latest/user-guide/configuring/configuration-files#using-eslintrecommended
+  - 'eslint:recommended'
+  - 'plugin:react/recommended'
+  - 'plugin:@typescript-eslint/recommended'
+  - 'plugin:import/typescript'
+  - 'plugin:prettier/recommended'
+
+plugins:
+  - '@typescript-eslint'
+  - 'prettier'
+  - 'no-only-tests'
+
+env:
+  es6: true
+  browser: true
+  node: true
+  jest: true
+
+globals:
+  React: 'writable'
+  cy: true
+
+settings:
+  import/resolver: { typescript: { alwaysTryTypes: true } }
+
+rules:
+  # Default included rules
+  camelcase: off # Database references are done w/underscore notation
+  class-methods-use-this: off # Low-scope helpers defined within a class is acceptable
+  eqeqeq: off # When checking if null, abstract equality can actually be better, also some apis use strings for numbers
+  global-require: off
+  linebreak-style: off
+  lines-between-class-members: off
+  new-cap: off # Buffer uses constructor: `new Buffer.from(...)`
+  no-alert: off
+  no-await-in-loop: off
+  no-bitwise: off
+  no-case-declarations: error
+  no-console: off # Default: warn
+  no-constant-condition: warn
+  no-continue: off
+  no-control-regex: off # Default: warn
+  no-debugger: warn
+  no-dupe-args: error
+  no-dupe-keys: error
+  no-duplicate-case: error
+  no-empty: warn
+  no-empty-character-class: warn
+  no-empty-pattern: error
+  no-ex-assign: error
+  no-extra-boolean-cast: warn
+  no-extra-parens: off
+  no-extra-semi: warn
+  no-fallthrough: error
+  no-func-assign: error
+  no-global-assign: error
+  no-inner-declarations: [error, functions]
+  no-invalid-regexp: error
+  no-irregular-whitespace: warn
+  no-loop-func: off
+  no-mixed-operators: off # Parenthesizing is preferred, just turning this off to reduce clutter
+  no-multi-assign: off
+  no-obj-calls: error
+  no-octal: error
+  no-param-reassign: off # In some cases, giving control to the function rather than the caller can be useful
+  no-prototype-builtins: warn
+  no-redeclare: warn
+  no-regex-spaces: warn
+  no-unused-vars: warn
+  no-restricted-globals: off
+  no-restricted-syntax: off
+  no-self-assign: error
+  no-shadow: off
+  no-sparse-arrays: error
+  no-template-curly-in-string: warn
+  no-underscore-dangle: off
+  no-unexpected-multiline: error
+  no-unreachable: warn
+  no-unsafe-finally: error
+  no-unsafe-negation: error
+  no-unused-labels: error
+  no-use-before-define: [error, { variables: false }] # Styles defined at bottom of file is clean
+  no-useless-escape: error
+  prefer-promise-reject-errors: off # Rejects returning a {success: false} object are acceptable
+  use-isnan: error
+  valid-typeof: off
+  'no-only-tests/no-only-tests': 'error'
+
+  # Custom rules
+  prettier/prettier:
+    [error, { singleQuote: true, semi: true, tabWidth: 2, useTabs: false, printWidth: 100 }]
+
+  import/extensions: [error, always, { js: never, jsx: never, ts: never, tsx: never }]
+  import/no-dynamic-require: off
+  import/no-extraneous-dependencies: off
+  import/no-unresolved: error
+  import/prefer-default-export: off
+
+  jsx-a11y/click-events-have-key-events: off # Object provides flexible style typing
+  jsx-a11y/control-has-associated-label: off
+  jsx-a11y/label-has-associated-control: [error, { required: { some: [nesting, id] } }]
+  jsx-a11y/label-has-for: [error, { required: { some: [nesting, id] } }] # Requires either linked id or wrapped label, not both
+  jsx-a11y/no-noninteractive-element-interactions: off
+  jsx-a11y/no-static-element-interactions: off
+
+  react/button-has-type: off
+  react/forbid-prop-types: [error, forbid: [object, array]]
+  react/jsx-curly-newline: off
+  react/jsx-filename-extension: off
+  react/jsx-fragments: off
+  react/jsx-props-no-spreading: off
+  react/no-array-index-key: error
+  react/no-multi-comp: off
+  react/no-unescaped-entities: off
+  react/no-unstable-nested-components: warn
+  react/prop-types: off
+  react/react-in-jsx-scope: off
+  react/require-default-props: off
+  react/state-in-constructor: off
+  react/static-property-placement: off
+  react/function-component-definition: off
+
+  '@typescript-eslint/no-shadow': error
+  '@typescript-eslint/no-empty-function': [error, { allow: [arrowFunctions] }]
+  '@typescript-eslint/ban-types': [error, { extendDefaults: true, types: { '{}': false } }]
+  '@typescript-eslint/no-non-null-assertion':
+    [off, quotes: [2, single, { avoidEscape: true, allowTemplateLiterals: true }]]
+  '@typescript-eslint/no-var-requires': warn

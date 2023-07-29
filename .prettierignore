@@ -1,0 +1,12 @@
+node_modules
+build
+dist
+coverage
+.next
+docs
+.vscode
+.storybook
+.insomnia
+cloudbuild
+temp
+idea
