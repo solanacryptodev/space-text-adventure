@@ -1,6 +1,8 @@
 import { action, observable, makeObservable } from 'mobx';
+import { singleton } from 'tsyringe';
 import { PublicKey } from '@solana/web3.js';
 
+@singleton()
 export class ProfileViewModel {
   publicKey: PublicKey;
   profilePicture: string | undefined;
@@ -17,7 +19,7 @@ export class ProfileViewModel {
       setPublicKey: action.bound,
       setProfilePicture: action.bound,
       setCharacters: action.bound,
-      submitProfile: action.bound,
+      submitProfileToModel: action.bound,
     });
   }
 
@@ -33,8 +35,8 @@ export class ProfileViewModel {
     this.characters = characters;
   }
 
-  submitProfile(): void {
+  submitProfileToModel(): void {
     // TODO: Call Profile Model method that wraps the Mercury API call
-    console.log('Profile submitted');
+    console.log('Profile submitted VM');
   }
 }

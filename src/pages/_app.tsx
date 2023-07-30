@@ -1,6 +1,6 @@
-import { type Session } from 'next-auth';
+import { Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react';
-import { type AppType } from 'next/app';
+import { AppType } from 'next/app';
 import { UseWalletContextProvider } from '~/hooks/useWalletContextProvider';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import {
