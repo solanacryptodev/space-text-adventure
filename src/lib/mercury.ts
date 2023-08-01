@@ -6,16 +6,11 @@ export const testEndpoint = (): string | undefined => {
   return queryData?.greeting;
 };
 
-export const createProfile = (
-  domainName: string,
-  screenName: string,
-  publicKey: string,
-  profilePicture: string
-): void => {
+export const createProfile = (domainName: string, profileName: string, publicKey: string): void => {
   const dateCreated = new Date();
   const characters: [] = [];
 
   return mercuryApi.profile.createProfile
     ?.useMutation()
-    .mutate({ domainName, screenName, publicKey, profilePicture, characters, dateCreated });
+    .mutate({ domainName, profileName, publicKey, characters, dateCreated });
 };

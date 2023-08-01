@@ -19,10 +19,10 @@ export const characterSchema = z.object({
 
 export const profileSchema = z.object({
   domainName: z.string(),
-  screenName: z.string(),
+  profileName: z.string(),
   publicKey: z.string(),
   profilePicture: z.string().optional(),
-  characters: z.array(characterSchema).optional(),
+  characters: z.array(characterSchema).optional().default([]),
   dateCreated: z.date(),
   dateUpdated: z.date().optional(),
 });

@@ -1,7 +1,12 @@
 import { TRPCError } from '@trpc/server';
 import { profileSchema } from '~/lib/schemas/schema';
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
-import { useCreateProfile, useGumContext, useUploaderContext } from '@gumhq/react-sdk';
+import {
+  useCreateProfile,
+  useGumContext,
+  useUploaderContext,
+  useShadowStorage,
+} from '@gumhq/react-sdk';
 import { PublicKey } from '@solana/web3.js';
 import { useWallet } from '@solana/wallet-adapter-react';
 
@@ -11,7 +16,7 @@ export const profileRouter = createTRPCRouter({
     const { sdk } = useGumContext();
     const { createProfileWithDomain } = useCreateProfile(sdk);
     const { handleUpload } = useUploaderContext();
-    const { domainName, screenName, publicKey, profilePicture, characters } = input;
+    const { domainName, publicKey, characters, profileName, dateCreated } = input;
 
     try {
       if (!publicKey) {
@@ -29,9 +34,9 @@ export const profileRouter = createTRPCRouter({
       const profileMetadata = {
         publicKey,
         domainName,
-        screenName,
-        profilePicture,
+        profileName,
         characters,
+        dateCreated,
       };
       const uploadResponse = await handleUpload(profileMetadata, wallet);
       console.log('Upload response', uploadResponse);
@@ -42,7 +47,8 @@ export const profileRouter = createTRPCRouter({
 
       const profileResponse = await createProfileWithDomain(
         uploadResponse.url,
-        screenName,
+        domainName,
+        new PublicKey(publicKey),
         new PublicKey(publicKey)
       );
       if (!profileResponse) {
