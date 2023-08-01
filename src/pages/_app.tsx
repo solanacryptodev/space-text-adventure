@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react';
 import { AppType } from 'next/app';

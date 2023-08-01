@@ -1,13 +1,16 @@
-import React, { JSX, useState } from 'react';
+import React, { JSX } from 'react';
 import { observer } from 'mobx-react-lite';
+import { ProfileViewModel } from '~/viewmodels/Profile/ProfileViewModel';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { useViewModel } from '../../../reactReactive/viewmodels/useViewModel';
 
 export const ProfileView = observer((): JSX.Element => {
-  const [domainName, setDomainName] = useState('');
-  const [profileUsername, setScreenName] = useState(''); // username is the screen name
+  const profileVM = useViewModel<ProfileViewModel>(ProfileViewModel);
+  const wallet = useWallet();
 
   const createProfile = async (event: React.FormEvent<HTMLFormElement>) => {
-    // TODO: call Mercury API via ProfileVM
-
+    profileVM.setPublicKey(wallet.publicKey?.toString());
+    profileVM.submitProfileToModel();
     event.preventDefault();
   };
 
@@ -23,7 +26,7 @@ export const ProfileView = observer((): JSX.Element => {
             placeholder=" "
             required
             onChange={(event) => {
-              setDomainName(event.target.value);
+              profileVM.setDomainName(event.target.value);
             }}
           />
           <label
@@ -42,14 +45,14 @@ export const ProfileView = observer((): JSX.Element => {
             placeholder=" "
             required
             onChange={(event) => {
-              setScreenName(event.target.value);
+              profileVM.setProfileName(event.target.value);
             }}
           />
           <label
             htmlFor="screenName"
             className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
           >
-            Screen Name
+            Profile Name
           </label>
         </div>
 

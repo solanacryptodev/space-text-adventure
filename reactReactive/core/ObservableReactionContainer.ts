@@ -1,0 +1,104 @@
+import { IReactionDisposer, reaction, runInAction } from 'mobx';
+import { pullAt } from 'lodash';
+import { LifeCycleObject } from './LifeCycleObject';
+
+/**
+ * Object which helps manage reacting to Observable reactions, should be the base class for items that deal with Mobx
+ * reactions and autorun code.
+ *
+ * This is primarily to reduce memory leaks by having Mobx object reaction code keeping an object alive after it should
+ * be removed.
+ *
+ * An example:
+ *  View Model Observer which uses a reaction then forgets to call the disposer
+ *
+ *  export class WalletViewModel {
+ *      const { connected, getBalances } = this.addDependency(WalletModel);
+ *
+ *      onInitialize() {
+ *       // HERE IS THE BUG
+ *          reaction(
+ *            ()=>connected,
+ *            ()=> {
+ *                if(connected) this.getBalances();
+ *            })
+ *      }
+ *  }
+ *
+ *  In the above code, even after the WalletViewModel is no longer used by the React View, Mobx will hold a pointer to
+ *  it via the reaction() method call.  The JavaScript GC will be able to trace, through Mobx, to this object and will
+ *  not GC it.  Also, anytime wallet changes, this object will execute the effect code and might cause all kinds of
+ *  issues down the road.
+ *
+ *  This object resolves this by keeping track of IReactionDisposers and then making sure they are executed, which
+ *  frees up the reference in Mobx.
+ */
+export abstract class ObservableReactionContainer extends LifeCycleObject {
+  protected reactions: Array<IReactionDisposer>;
+
+  constructor() {
+    super();
+    this.reactions = [];
+  }
+
+  public end(config?: any): void {
+    super.end(config);
+    if (this.initGuard === 0) {
+      this.removeAllReactions();
+    }
+  }
+
+  // this returns an index that can be used to clear a reaction later
+  // via the clearReaction function.
+  addReaction(reactions: IReactionDisposer): number {
+    return this.reactions.push(reactions) - 1;
+  }
+
+  removeReaction(idx: number): void {
+    if (idx > -1 && idx < this.reactions.length) {
+      const disposer = this.reactions[idx]!;
+      disposer();
+      pullAt(this.reactions, idx);
+    }
+  }
+
+  removeAllReactions(): void {
+    for (const reactionDisposer of this.reactions) {
+      reactionDisposer();
+    }
+    this.reactions = [];
+  }
+
+  get reactionsCount(): number {
+    return this.reactions.length;
+  }
+}
+
+/**
+ * Some helper functions for dealing with Mobx
+ */
+export function delayedAction(expression: () => void, delayInMs: number): void {
+  setTimeout(() => {
+    runInAction(() => {
+      expression();
+    });
+  }, delayInMs);
+}
+
+export async function awaitReaction<T>(
+  expression: (r: any) => T,
+  effect: (arg: T, prev: T, r: any) => void,
+  opts: any = {}
+): Promise<T> {
+  return new Promise((resolve) => {
+    const disposer = reaction(
+      expression,
+      (arg, prev, r) => {
+        effect(arg, prev, r);
+        disposer();
+        resolve(arg);
+      },
+      opts
+    );
+  });
+}

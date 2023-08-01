@@ -16,7 +16,7 @@ export const profileRouter = createTRPCRouter({
     const { sdk } = useGumContext();
     const { createProfileWithDomain } = useCreateProfile(sdk);
     const { handleUpload } = useUploaderContext();
-    const { domainName, screenName, publicKey, profilePicture, characters } = input;
+    const { domainName, publicKey, characters, profileName, dateCreated } = input;
 
     try {
       if (!publicKey) {
@@ -34,9 +34,9 @@ export const profileRouter = createTRPCRouter({
       const profileMetadata = {
         publicKey,
         domainName,
-        screenName,
-        profilePicture,
+        profileName,
         characters,
+        dateCreated,
       };
       const uploadResponse = await handleUpload(profileMetadata, wallet);
       console.log('Upload response', uploadResponse);

@@ -4,7 +4,7 @@ import {
   type WalletAdapterNetwork,
   type WalletError,
 } from '@solana/wallet-adapter-base';
-import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
+import { ConnectionProvider, WalletProvider, Wallet } from '@solana/wallet-adapter-react';
 import dynamic from 'next/dynamic';
 
 export const ReactUIWalletModalProviderDynamic = dynamic(
