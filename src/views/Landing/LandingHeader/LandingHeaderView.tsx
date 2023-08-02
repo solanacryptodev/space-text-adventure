@@ -42,7 +42,7 @@ export const LandingHeaderView = observer((): JSX.Element => {
           </button>
           <a href="/" className="flex items-center justify-between mr-4">
             <img src="/genesys_realms_icon.jpeg" className="mr-3 h-8" alt="Genesys Realms Logo" />
-            <span className="self-center text-2xl font-semibold whitespace-nowrap text-[#FF7F50] dark:text-white">
+            <span className="font-lilita font-thin self-center text-2xl whitespace-nowrap text-[#FF7F50] dark:text-white">
               Genesys Realms
             </span>
           </a>
