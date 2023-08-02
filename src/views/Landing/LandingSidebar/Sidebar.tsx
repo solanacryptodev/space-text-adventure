@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 export const LandingSidebarView = observer((): JSX.Element => {
   return (
     <aside
-      className="fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+      className="fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-[#151B25] md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
       aria-label="Sidenav"
       id="drawer-navigation"
     >
@@ -41,11 +41,11 @@ export const LandingSidebarView = observer((): JSX.Element => {
           <li>
             <a
               href="#"
-              className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-[#FF7F50] dark:hover:bg-gray-700 group"
             >
               <svg
                 aria-hidden="true"
-                className="w-6 h-6 text-white-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                className="w-6 h-6 text-[#FF7F50] transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -53,19 +53,19 @@ export const LandingSidebarView = observer((): JSX.Element => {
                 <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z" />
                 <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z" />
               </svg>
-              <span className="ml-3 text-white">World View</span>
+              <span className="ml-3 hover:text-black text-white">World View</span>
             </a>
           </li>
           <li>
             <button
               type="button"
-              className="flex items-center p-2 w-full text-base font-medium text-[#F4D06F] rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+              className="flex items-center p-2 w-full text-base font-medium text-gray-400 rounded-lg transition duration-75 group hover:bg-[#FF7F50] dark:text-white dark:hover:bg-gray-700"
               aria-controls="dropdown-pages"
               data-collapse-toggle="dropdown-pages"
             >
               <svg
                 aria-hidden="true"
-                className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+                className="flex-shrink-0 w-6 h-6 text-[#FF7F50] transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -79,7 +79,7 @@ export const LandingSidebarView = observer((): JSX.Element => {
               <span className="flex-1 ml-3 text-left text-white whitespace-nowrap">Worlds</span>
               <svg
                 aria-hidden="true"
-                className="w-6 h-6"
+                className="w-6 h-6 hover:text-black text-[#FF7F50]"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -121,13 +121,13 @@ export const LandingSidebarView = observer((): JSX.Element => {
           <li>
             <button
               type="button"
-              className="flex items-center p-2 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+              className="flex items-center p-2 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-[#FF7F50] dark:text-white dark:hover:bg-gray-700"
               aria-controls="dropdown-sales"
               data-collapse-toggle="dropdown-sales"
             >
               <svg
                 aria-hidden="true"
-                className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+                className="flex-shrink-0 w-6 h-6 text-[#FF7F50] transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -138,10 +138,10 @@ export const LandingSidebarView = observer((): JSX.Element => {
                   clipRule="evenodd"
                 />
               </svg>
-              <span className="flex-1 ml-3 text-left whitespace-nowrap">Characters</span>
+              <span className="flex-1 ml-3 text-left text-white whitespace-nowrap">Characters</span>
               <svg
                 aria-hidden="true"
-                className="w-6 h-6"
+                className="w-6 h-6 text-[#FF7F50] hover:text-black"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -182,15 +182,15 @@ export const LandingSidebarView = observer((): JSX.Element => {
           </li>
         </ul>
 
-        <ul className="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700">
+        <ul className="pt-5 mt-5 space-y-2 border-t-[3px] border-[#151B25] dark:border-gray-700">
           <li>
             <a
               href="#"
-              className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
+              className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-[#FF7F50] dark:hover:bg-gray-700 dark:text-white group"
             >
               <svg
                 aria-hidden="true"
-                className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                className="flex-shrink-0 w-6 h-6 text-[#FF7F50] transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -202,34 +202,34 @@ export const LandingSidebarView = observer((): JSX.Element => {
                   clipRule="evenodd"
                 />
               </svg>
-              <span className="ml-3">Docs</span>
+              <span className="ml-3 text-white">World Stats - Coming Soon</span>
             </a>
           </li>
           <li>
             <a
               href="#"
-              className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
+              className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-[#FF7F50] dark:hover:bg-gray-700 dark:text-white group"
             >
               <svg
                 aria-hidden="true"
-                className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                className="flex-shrink-0 w-6 h-6 text-[#FF7F50] transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
               </svg>
-              <span className="ml-3">Components</span>
+              <span className="ml-3 text-white">Plugins - Coming Soon</span>
             </a>
           </li>
           <li>
             <a
               href="#"
-              className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
+              className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-[#FF7F50] dark:hover:bg-gray-700 dark:text-white group"
             >
               <svg
                 aria-hidden="true"
-                className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                className="flex-shrink-0 w-6 h-6 text-[#FF7F50] transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -240,7 +240,7 @@ export const LandingSidebarView = observer((): JSX.Element => {
                   clipRule="evenodd"
                 />
               </svg>
-              <span className="ml-3">Help</span>
+              <span className="ml-3 text-white">Whitepaper</span>
             </a>
           </li>
         </ul>

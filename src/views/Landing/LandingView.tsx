@@ -12,7 +12,7 @@ export const LandingView: FC = observer(() => {
   const themeGradiantEnd = theme.extend.colors.primary['400'];
 
   return (
-    <div className="antialiased bg-gradient-to-b from-[#1f2933] to-[#151B25] dark:bg-gray-900">
+    <div className="antialiased bg-gradient-to-b from-[#151B25] to-[#000000] dark:bg-gray-900">
       {/* Header */}
       <LandingHeaderView />
 

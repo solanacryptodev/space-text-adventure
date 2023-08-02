@@ -38,6 +38,7 @@
     "reflect-metadata": "^0.1.13",
     "superjson": "1.12.2",
     "tsyringe": "^4.8.0",
+    "use-sound": "^4.0.1",
     "zod": "^3.21.4"
   },
   "devDependencies": {
