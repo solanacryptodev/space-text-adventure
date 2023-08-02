@@ -24,6 +24,10 @@ export default {
       pink: colors.fuchsia,
     },
     extend: {
+      fontFamily: {
+        roboto: ['Roboto', 'sans-serif'],
+        lilita: ['Lilita One', 'cursive'],
+      },
       colors: {
         primary: {
           '50': '#eff6ff',
