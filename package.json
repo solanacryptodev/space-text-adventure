@@ -23,6 +23,8 @@
     "@trpc/react-query": "^10.26.0",
     "@trpc/server": "^10.26.0",
     "@types/lodash": "^4.14.196",
+    "flowbite": "^1.8.0",
+    "flowbite-react": "^0.5.0",
     "framer-motion": "^10.15.0",
     "helius-sdk": "^1.0.13",
     "lodash": "^4.17.21",

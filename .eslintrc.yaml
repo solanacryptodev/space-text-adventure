@@ -111,6 +111,7 @@ rules:
   jsx-a11y/label-has-for: [error, { required: { some: [nesting, id] } }] # Requires either linked id or wrapped label, not both
   jsx-a11y/no-noninteractive-element-interactions: off
   jsx-a11y/no-static-element-interactions: off
+  jsx-a11y/anchor-is-valid: warn
 
   react/button-has-type: off
   react/forbid-prop-types: [error, forbid: [object, array]]
@@ -120,6 +121,7 @@ rules:
   react/jsx-props-no-spreading: off
   react/no-array-index-key: error
   react/no-multi-comp: off
+  react/no-unknown-property: off
   react/no-unescaped-entities: off
   react/no-unstable-nested-components: warn
   react/prop-types: off
