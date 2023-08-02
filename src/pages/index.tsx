@@ -9,7 +9,7 @@ export default function Home(): JSX.Element {
       <Head>
         <title>Text Game</title>
         <meta name="description" content="A text-based game powered by the Solana blockchain" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/genesys_realms_icon.jpeg" />
       </Head>
 
       <LandingView />
