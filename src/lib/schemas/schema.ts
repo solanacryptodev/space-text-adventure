@@ -23,7 +23,7 @@ export const profileSchema = z.object({
   publicKey: z.string(),
   profilePicture: z.string().optional(),
   characters: z.array(characterSchema).optional().default([]),
-  dateCreated: z.date(),
+  dateCreated: z.date().optional(),
   dateUpdated: z.date().optional(),
 });
 

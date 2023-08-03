@@ -1,13 +1,14 @@
-import { action, computed, makeObservable, observable } from 'mobx';
+import { action, autorun, computed, makeObservable, observable } from 'mobx';
 import { Adapter } from '@solana/wallet-adapter-base';
 import { useWalletModal, WalletModalContextState } from '@solana/wallet-adapter-react-ui';
-import { useWallet, WalletContextState } from '@solana/wallet-adapter-react';
 import { singleton } from 'tsyringe';
+import { ProfileViewModel } from '~/viewmodels/Profile/ProfileViewModel';
 import { StandardViewModel } from '../../../reactReactive/viewmodels/StandardViewModel';
 
 @singleton()
 export class WalletModel extends StandardViewModel {
-  wallet: WalletContextState;
+  profileVM = this.addDependency(ProfileViewModel);
+  wallet: string;
   walletModal: WalletModalContextState;
   walletAdapters: Adapter[];
   connected: boolean;
@@ -16,7 +17,7 @@ export class WalletModel extends StandardViewModel {
     super();
     this.walletAdapters = [];
     this.connected = false;
-    this.wallet = useWallet();
+    this.wallet = '';
     this.walletModal = useWalletModal();
 
     makeObservable(this, {
@@ -25,29 +26,36 @@ export class WalletModel extends StandardViewModel {
       wallet: observable,
       walletModal: observable,
 
-      setShowWalletModal: action.bound,
+      setPublicKey: action.bound,
 
       isConnected: computed,
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  protected onInitialize(): void {}
+  protected onInitialize(): void {
+    this.createReactions();
+  }
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   protected onEnd(): void {}
 
-  get isConnected(): boolean {
-    console.log('is connected?: ', this.wallet.connected);
-    return this.wallet.connected;
+  protected createReactions(): void {
+    this.addReaction(
+      autorun(() => {
+        if (this.wallet.length > 0) {
+          this.connected = true;
+          console.log('connected: ', this.wallet);
+        } else if (this.wallet.length === 0) {
+          this.walletModal.setVisible(true);
+        }
+      })
+    );
   }
 
-  async setShowWalletModal(): Promise<void> {
-    try {
-      if (!this.wallet.connected) {
-        this.walletModal.setVisible(true);
-      }
-    } catch (error) {
-      console.log('error with wallet:', error);
-    }
+  get isConnected(): boolean {
+    return this.connected;
+  }
+
+  async setPublicKey(publicKey: string): Promise<void> {
+    this.wallet = publicKey;
   }
 }
