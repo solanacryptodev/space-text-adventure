@@ -3,8 +3,8 @@ import { observer } from 'mobx-react-lite';
 import { WorldPreviewCard } from '~/components/common/cards/WorldPreviewCard';
 import { useProfileCreate } from '~/hooks/useCreateProfile';
 import { WalletModel } from '~/models/Wallet/WalletModel';
-import { useViewModel } from '../../../../reactReactive/viewmodels/useViewModel';
 import { useWallet } from '@solana/wallet-adapter-react';
+import { useViewModel } from '../../../../reactReactive/viewmodels/useViewModel';
 
 export const LandingMain = observer((): JSX.Element => {
   const { createProfile } = useProfileCreate();
