@@ -1,6 +1,6 @@
 import { singleton } from 'tsyringe';
 import { action, makeObservable } from 'mobx';
-import { createProfile } from '~/lib/mercury';
+// import { createProfile } from '~/lib/mercury';
 import { StandardViewModel } from '../../../reactReactive/viewmodels/StandardViewModel';
 
 @singleton()

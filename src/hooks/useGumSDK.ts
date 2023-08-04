@@ -8,7 +8,7 @@ export const useGumSDK = () => {
   const anchorWallet = useAnchorWallet()!;
 
   // GraphQL endpoint is chosen based on the network
-  const graphqlEndpoint = GRAPHQL_ENDPOINTS.devnet;
+  const graphqlEndpoint = GRAPHQL_ENDPOINTS['mainnet-beta'];
 
   const gqlClient = useMemo(() => new GraphQLClient(graphqlEndpoint), [graphqlEndpoint]);
 
@@ -16,7 +16,7 @@ export const useGumSDK = () => {
     anchorWallet,
     connection,
     { preflightCommitment: 'confirmed' },
-    'devnet',
+    'mainnet-beta',
     gqlClient
   );
 };
