@@ -1,5 +1,7 @@
 import { PublicKey } from '@solana/web3.js';
 import { useGumContext, useUploaderContext, useCreateProfile } from '@gumhq/react-sdk';
+import { ShadowFile } from '@shadow-drive/sdk';
+import { Buffer } from 'buffer';
 
 export const useProfileCreate = () => {
   const { sdk } = useGumContext();
@@ -25,27 +27,39 @@ export const useProfileCreate = () => {
         return;
       }
 
-      const profileMetadata = {
-        publicKey,
+      const rawData = {
         domainName,
         profileName,
+        publicKey,
       };
-      console.log('profileMetadata:', profileMetadata);
-      const uploadResponse = await handleUpload(profileMetadata!, wallet).catch((error) =>
-        console.log('err: ', error)
-      );
-      console.log('Upload response', uploadResponse);
-      if (!uploadResponse) {
-        console.error('Error uploading profile metadata');
-        return;
-      }
 
-      const profileResponse = await createProfileWithDomain(
-        '8ew8wec8e8e8238cw',
+      const rawDataJSON = JSON.stringify(rawData);
+      const metadataBuffer = Buffer.from(rawDataJSON);
+
+      const profileMetadata: ShadowFile = {
+        name: 'TestProfileMetadata',
+        file: metadataBuffer,
+      };
+
+      // const bufferData = profileMetadata.file.toString();
+      // const parsedFile = JSON.parse(bufferData);
+      //
+      // console.log('parsed file data:', parsedFile);
+      console.log('wallet: ', wallet);
+      const uploadResponse = await handleUpload(profileMetadata, wallet);
+      console.log('Upload response', uploadResponse?.signature);
+      // if (!uploadResponse) {
+      //   console.error('Error uploading profile metadata');
+      //   return;
+      // }
+
+      const profileResponse = await sdk.profile.createProfileWithGumDomain(
+        uploadResponse!.url,
         domainName,
         new PublicKey(publicKey),
         new PublicKey(publicKey)
       );
+      console.log('profileResponse: ', profileResponse.profilePDA.toString());
       if (!profileResponse) {
         console.error('Error creating profile');
         return;

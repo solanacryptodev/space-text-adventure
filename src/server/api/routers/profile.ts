@@ -19,42 +19,7 @@ export const profileRouter = createTRPCRouter({
     const { domainName, publicKey, characters, profileName, dateCreated } = input;
 
     try {
-      if (!publicKey) {
-        console.log('No public key found');
-        return;
-      }
-
-      const profilePDA = await sdk.profile.getProfileByDomainName(domainName);
-      console.log('Profile PDA', profilePDA);
-      if (profilePDA) {
-        console.log('Profile account found with username', domainName);
-        return;
-      }
-
-      const profileMetadata = {
-        publicKey,
-        domainName,
-        profileName,
-        characters,
-        dateCreated,
-      };
-      const uploadResponse = await handleUpload(profileMetadata, wallet);
-      console.log('Upload response', uploadResponse);
-      if (!uploadResponse) {
-        console.error('Error uploading profile metadata');
-        return;
-      }
-
-      const profileResponse = await createProfileWithDomain(
-        uploadResponse.url,
-        domainName,
-        new PublicKey(publicKey),
-        new PublicKey(publicKey)
-      );
-      if (!profileResponse) {
-        console.error('Error creating profile');
-        return;
-      }
+      // enter
     } catch (error) {
       console.error('Error creating profile', error);
       // if (e instanceof PrismaClientKnownRequestError) {

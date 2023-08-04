@@ -1,6 +1,8 @@
 import { action, observable, makeObservable } from 'mobx';
 import { singleton } from 'tsyringe';
 import { ProfileModel } from '~/models/Profile/ProfileModel';
+import { ShadowDriveVersion, ShdwDrive } from '@shadow-drive/sdk';
+import { Connection } from '@solana/web3.js';
 import { StandardViewModel } from '../../../reactReactive/viewmodels/StandardViewModel';
 
 @singleton()
@@ -33,6 +35,7 @@ export class ProfileViewModel extends StandardViewModel {
       submitProfileToModel: action.bound,
       setDomainName: action.bound,
       setProfileName: action.bound,
+      createStorageAccount: action.bound,
     });
   }
 
@@ -66,5 +69,19 @@ export class ProfileViewModel extends StandardViewModel {
   submitProfileToModel(): void {
     this.profileModel.submitProfile(this.domainName, this.profileName, this.publicKey);
     console.log('Profile submitted VM');
+  }
+
+  async createStorageAccount(
+    name: string,
+    size: string,
+    version: ShadowDriveVersion,
+    wallet: any,
+    connection: Connection
+  ): Promise<string | undefined> {
+    const shdwDrive = await new ShdwDrive(connection, wallet).init();
+    console.log('drive: ', shdwDrive);
+    const drive = await shdwDrive.createStorageAccount(name, size, version);
+    console.log('shdw bucket: ', drive.shdw_bucket);
+    return drive.shdw_bucket;
   }
 }
