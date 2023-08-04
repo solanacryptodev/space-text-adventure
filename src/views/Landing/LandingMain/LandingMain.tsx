@@ -1,40 +1,40 @@
 import React, { JSX } from 'react';
 import { observer } from 'mobx-react-lite';
 import { WorldPreviewCard } from '~/components/common/cards/WorldPreviewCard';
-import { useProfileCreate } from '~/hooks/useCreateProfile';
-import { useShadowDrive } from '~/hooks/useShadowDrive';
+// import { useProfileCreate } from '~/hooks/useCreateProfile';
+// import { useShadowDrive } from '~/hooks/useShadowDrive';
 import { WalletModel } from '~/models/Wallet/WalletModel';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
-import { useShadowStorage } from '@gumhq/react-sdk';
+// import { useShadowStorage } from '@gumhq/react-sdk';
 import { ProfileViewModel } from '~/viewmodels/Profile/ProfileViewModel';
 import { useViewModel } from '../../../../reactReactive/viewmodels/useViewModel';
 
 export const LandingMain = observer((): JSX.Element => {
   const { publicKey, wallet } = useWallet();
   const { connection } = useConnection();
-  const { createProfile } = useProfileCreate();
+  // const { createProfile } = useProfileCreate();
   // const { createStorageAccount } = useShadowStorage(connection);
   // const { createStorageAccount } = useShadowDrive();
   const walletVM = useViewModel<WalletModel>(WalletModel);
   const profileVM = useViewModel<ProfileViewModel>(ProfileViewModel);
 
-  const handleCreateProfile = async () => {
-    const domainName = 'brian';
-    const profileName = 'janus';
-    const setPublicKey = String(publicKey);
-
-    console.log('wallet in View: ', wallet);
-    await createProfile(domainName, profileName, setPublicKey, wallet);
-  };
+  // const handleCreateProfile = async () => {
+  //   const domainName = 'brian';
+  //   const profileName = 'janus';
+  //   const setPublicKey = String(publicKey);
+  //
+  //   console.log('wallet in View: ', wallet);
+  //   await createProfile(domainName, profileName, setPublicKey, wallet);
+  // };
 
   const handleCreateStorageAcct = async () => {
     await profileVM.createStorageAccount('OPOS_DEMO', '10MB', 'v2', wallet, connection);
   };
 
   if (walletVM.isConnected) {
-    const verifyJoinedGame = async () => {
-      // await getFilesFromWorldStorage(publicKey!.toString());
-    };
+    // const verifyJoinedGame = async () => {
+    //    await getFilesFromWorldStorage(publicKey!.toString());
+    // };
     // if no profile with that publicKey exists
     // uploadFilesToWorldStorage(publicKey!.toString()).then();
   }

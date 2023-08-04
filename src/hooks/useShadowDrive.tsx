@@ -1,4 +1,4 @@
-import { ShadowFile, ShdwDrive, ShadowDriveVersion } from '@shadow-drive/sdk';
+import { ShdwDrive, ShadowDriveVersion } from '@shadow-drive/sdk';
 import { Connection } from '@solana/web3.js';
 
 export const useShadowDrive = () => {
@@ -20,7 +20,7 @@ export const useShadowDrive = () => {
   };
 
   /* Uploaded files can be profiles saved to world storage */
-  const uploadFilesToWorldStorage = async (publicKey: string): Promise<void> => {
+  const uploadFilesToWorldStorage = async (): Promise<void> => {
     try {
       // via the Mercury API, upload ShadowFiles to storage
     } catch (error) {
@@ -28,7 +28,7 @@ export const useShadowDrive = () => {
     }
   };
 
-  const getFilesFromWorldStorage = async (publicKey: string): Promise<void> => {
+  const getFilesFromWorldStorage = async (): Promise<void> => {
     try {
       // via the Mercury API, get all ShadowFiles from storage
     } catch (error) {
@@ -36,5 +36,5 @@ export const useShadowDrive = () => {
     }
   };
 
-  return { createStorageAccount };
+  return { createStorageAccount, uploadFilesToWorldStorage, getFilesFromWorldStorage };
 };

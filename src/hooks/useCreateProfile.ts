@@ -1,11 +1,11 @@
 import { PublicKey } from '@solana/web3.js';
-import { useGumContext, useUploaderContext, useCreateProfile } from '@gumhq/react-sdk';
+import { useGumContext, useUploaderContext } from '@gumhq/react-sdk';
 import { ShadowFile } from '@shadow-drive/sdk';
 import { Buffer } from 'buffer';
 
 export const useProfileCreate = () => {
   const { sdk } = useGumContext();
-  const { createProfileWithDomain } = useCreateProfile(sdk);
+  // const { createProfileWithDomain } = useCreateProfile(sdk);
   const { handleUpload } = useUploaderContext();
 
   const createProfile = async (
