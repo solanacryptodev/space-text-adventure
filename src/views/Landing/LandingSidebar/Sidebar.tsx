@@ -53,7 +53,7 @@ export const LandingSidebarView = observer((): JSX.Element => {
                 <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z" />
                 <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z" />
               </svg>
-              <span className="ml-3 hover:text-black text-white">World View</span>
+              <span className="ml-3 hover:text-black text-white">Realm Core</span>
             </a>
           </li>
           <li>
@@ -76,7 +76,7 @@ export const LandingSidebarView = observer((): JSX.Element => {
                   clipRule="evenodd"
                 />
               </svg>
-              <span className="flex-1 ml-3 text-left text-white whitespace-nowrap">Worlds</span>
+              <span className="flex-1 ml-3 text-left text-white whitespace-nowrap">Realms</span>
               <svg
                 aria-hidden="true"
                 className="w-6 h-6 hover:text-black text-[#FF7F50]"
@@ -202,7 +202,7 @@ export const LandingSidebarView = observer((): JSX.Element => {
                   clipRule="evenodd"
                 />
               </svg>
-              <span className="ml-3 text-white">World Stats - Coming Soon</span>
+              <span className="ml-3 text-white">Realm Stats - Coming Soon</span>
             </a>
           </li>
           <li>

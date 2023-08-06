@@ -33,11 +33,12 @@ export const demoTextCards: TextCardProps[] = [
     cardBodyText: 'Data goes here',
   },
   {
-    cardHeader: 'Header goes here',
-    cardBodyText: 'Data goes here',
+    cardHeader: 'Interactive Fiction on Solana',
+    cardBodyText:
+      'Genesys Realms, along with the Hermes Game Engine, exemplifies Only Possible On Solana',
   },
   {
-    cardHeader: 'Header goes here',
-    cardBodyText: 'Data goes here',
+    cardHeader: 'Begin Your Journey',
+    cardBodyText: 'Create a character and join the game',
   },
 ];

@@ -7,7 +7,7 @@ export const BasicTextCard = observer(
     return (
       <div className="flex-1 p-6 h-48 md:h-72 bg-[#BBC8DE] border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <a href="#">
-          <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+          <h5 className="mb-2 text-2xl font-bold tracking-wide text-gray-900 dark:text-white">
             {cardHeader}
           </h5>
         </a>
