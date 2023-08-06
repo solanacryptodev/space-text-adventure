@@ -1,7 +1,7 @@
 import { JSX } from 'react';
-import { WalletModel } from '~/models/Wallet/WalletModel';
 import { observer } from 'mobx-react-lite';
 import { WorldPreviewCardProps } from '~/lib/types/globalTypes';
+import { CharacterCreationViewModel } from '~/viewmodels/CharacterCreation/CharacterCreationViewModel';
 import { useViewModel } from '../../../../reactReactive/viewmodels/useViewModel';
 
 export const WorldPreviewCard = observer(
@@ -13,10 +13,10 @@ export const WorldPreviewCard = observer(
     storyAltText,
     publicKey,
   }: WorldPreviewCardProps): JSX.Element => {
-    const walletModel = useViewModel<WalletModel>(WalletModel);
+    const characterCreateVM = useViewModel<CharacterCreationViewModel>(CharacterCreationViewModel);
 
     return (
-      <div className="max-w-lg bg-[#BBC8DE] border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <div className="max-w-full bg-[#BBC8DE] rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <a href="#">
           <img className="rounded-t-lg" src={storyImage} alt={storyAltText} />
         </a>
@@ -28,14 +28,14 @@ export const WorldPreviewCard = observer(
           <div className="flex flex-row justify-between">
             <a
               href="#"
-              onClick={() => walletModel.setPublicKey(publicKey!)}
+              onClick={() => characterCreateVM.displayCharacterCreateModal(true)}
               className="items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#FF7F50] rounded-lg hover:bg-[#151B25] focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
               Create a Character
             </a>
             <a
               href="#"
-              onClick={() => walletModel.setPublicKey(publicKey!)}
+              onClick={() => characterCreateVM.validatePlayerCharacter()}
               className="items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#FF7F50] rounded-lg hover:bg-[#151B25] focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
               Join Game

@@ -10,6 +10,17 @@ export interface WorldPreviewCardProps {
   publicKey?: string;
 }
 
+export interface WorldImageCardProps {
+  worldImage?: string;
+  storyAltText?: string;
+  imageCaption?: string;
+}
+
+export interface TextCardProps {
+  cardHeader?: string;
+  cardBodyText?: string;
+}
+
 export interface WalletContextProvider {
   children: ReactNode;
   endpoint: string;

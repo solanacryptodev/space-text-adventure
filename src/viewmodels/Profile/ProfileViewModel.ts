@@ -4,6 +4,7 @@ import { ProfileModel } from '~/models/Profile/ProfileModel';
 import { ShadowDriveVersion, ShdwDrive } from '@shadow-drive/sdk';
 import { Connection } from '@solana/web3.js';
 import { SessionWalletInterface } from '@gumhq/react-sdk';
+import { AnchorWallet } from '@solana/wallet-adapter-react';
 import { StandardViewModel } from '../../../reactReactive/viewmodels/StandardViewModel';
 
 @singleton()
@@ -106,11 +107,10 @@ export class ProfileViewModel extends StandardViewModel {
     name: string,
     size: string,
     version: ShadowDriveVersion,
-    wallet: SessionWalletInterface | undefined | Uint8Array,
+    wallet: AnchorWallet | undefined,
     connection: Connection
   ): Promise<string> {
     const shdwDrive = await new ShdwDrive(connection, wallet).init();
-    console.log('drive: ', shdwDrive);
     const drive = await shdwDrive.createStorageAccount(name, size, version);
     console.log('shdw bucket: ', drive.shdw_bucket);
     return drive.shdw_bucket;
