@@ -12,6 +12,7 @@ import {
 import { clusterApiUrl } from '@solana/web3.js';
 import React, { useMemo } from 'react';
 import UseGumSDKProvider from '~/hooks/useGumSDKProvider';
+import GumSessionProvider from '~/components/SessionProvider/GumSessionProvider';
 
 import { mercuryApi } from '~/utils/api';
 import '~/styles/globals.css';
@@ -32,7 +33,9 @@ const TextGameApp: AppType<{ session: Session | null }> = ({
     <UseWalletContextProvider wallets={wallets} network={network} endpoint={endpoint}>
       <UseGumSDKProvider>
         <SessionProvider session={session}>
-          <Component {...pageProps} />
+          <GumSessionProvider>
+            <Component {...pageProps} />
+          </GumSessionProvider>
         </SessionProvider>
       </UseGumSDKProvider>
     </UseWalletContextProvider>

@@ -3,6 +3,17 @@
  * for Docker builds.
  */
 await import("./src/env.mjs");
+import withTranspiledModules from 'next-transpile-modules';
+
+const modules = [
+  '@project-serum/sol-wallet-adapter',
+  '@solana/wallet-adapter-base',
+  '@solana/wallet-adapter-wallets',
+  '@solana/wallet-adapter-react',
+  '@solana/wallet-adapter-react-ui',
+  '@gumhq/react-sdk',
+  '@shadow-drive/sdk',
+];
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -20,4 +31,4 @@ const config = {
   },
 };
 
-export default config;
+export default withTranspiledModules(modules)(config);

@@ -58,4 +58,25 @@ export class WalletModel extends StandardViewModel {
   async setPublicKey(publicKey: string): Promise<void> {
     this.wallet = publicKey;
   }
+
+  // const sessionWallet = useSessionWallet();
+  //
+  // const targetProgramPublicKey = new PublicKey(GPLSESSION_PROGRAMS['mainnet-beta']);
+  // const topUp = true;
+  // const expiryInMinutes = 60;
+
+  // const handleCreateProfile = async () => {
+  //   const domainName = 'brian';
+  //   const profileName = 'janus';
+  //
+  //   // const session = await sessionWallet.createSession(
+  //   //   targetProgramPublicKey,
+  //   //   topUp,
+  //   //   expiryInMinutes
+  //   // );
+  //
+  //   // console.log('session: ', session?.ownerPublicKey?.toString());
+  //   console.log('sessionWallet: ', sessionWallet);
+  //   await createProfile(domainName, profileName, setPublicKey, sessionWallet);
+  // };
 }

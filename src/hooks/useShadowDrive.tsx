@@ -1,19 +1,18 @@
 import { ShdwDrive, ShadowDriveVersion } from '@shadow-drive/sdk';
 import { Connection } from '@solana/web3.js';
+import { AnchorWallet } from '@solana/wallet-adapter-react';
 
 export const useShadowDrive = () => {
   const createStorageAccount = async (
     name: string,
     size: string,
     version: ShadowDriveVersion,
-    wallet: any,
+    wallet: AnchorWallet | undefined,
     connection: Connection
   ): Promise<void> => {
     try {
       const shdwDrive = await new ShdwDrive(connection, wallet).init();
-      await shdwDrive
-        .createStorageAccount(name, size, version)
-        .then((response) => console.log(response.shdw_bucket));
+      await shdwDrive.createStorageAccount(name, size, version);
     } catch (error) {
       console.log('createStorageAccount error: ', error);
     }
