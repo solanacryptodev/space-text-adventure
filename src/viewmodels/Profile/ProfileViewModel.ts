@@ -21,6 +21,8 @@ export class ProfileViewModel extends StandardViewModel {
   version: ShadowDriveVersion;
   wallet: SessionWalletInterface | undefined | Uint8Array;
 
+  musicPlaying: boolean;
+
   constructor() {
     super();
     this.publicKey = '';
@@ -34,13 +36,15 @@ export class ProfileViewModel extends StandardViewModel {
     this.version = 'v2';
     this.wallet = undefined;
 
+    this.musicPlaying = true;
+
     makeObservable(this, {
       publicKey: observable,
       profilePicture: observable,
       characters: observable,
       domainName: observable,
       profileName: observable,
-
+      musicPlaying: observable,
       storageName: observable,
       storageSize: observable,
       wallet: observable,
@@ -52,6 +56,8 @@ export class ProfileViewModel extends StandardViewModel {
       setDomainName: action.bound,
       setProfileName: action.bound,
       createStorageAccount: action.bound,
+      setMusicPlaying: action.bound,
+      toggleMusic: action.bound,
 
       setStorageName: action.bound,
       setStorageSize: action.bound,
@@ -96,6 +102,14 @@ export class ProfileViewModel extends StandardViewModel {
 
   setCharacters(characters: string[]): void {
     this.characters = characters;
+  }
+
+  setMusicPlaying(playing: boolean): void {
+    this.musicPlaying = playing;
+  }
+
+  toggleMusic(): void {
+    this.musicPlaying = !this.musicPlaying;
   }
 
   submitProfileToModel(): void {

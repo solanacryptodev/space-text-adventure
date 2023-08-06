@@ -26,14 +26,22 @@ export const demoPreviewCards: WorldImageCardProps[] = [
 export const demoTextCards: TextCardProps[] = [
   {
     cardHeader: 'Introducing Genesys Realms',
-    cardBodyText: 'Data goes here',
+    cardBodyText:
+      'Genesys Realms is a vision of a future for interactive fiction. A merger of reactive storytelling and gaming powered ' +
+      'by the Solana blockchain. In the near future, you will be able to come to this website and launch your own Game Realm. ' +
+      'A Game Realm is a unique world in which you, the Game Master, will define the ',
   },
   {
     cardHeader: 'Powered by the Hermes Game Engine',
-    cardBodyText: 'Data goes here',
+    cardBodyText:
+      'The Hermes Game Engine is a conceptual Solana program that will empower players through the formation of on-chain ' +
+      'Game Realms leveraging compressed NFTs as game objects. The H.G.E. will introduce the concept of text-based, reactive ' +
+      'interactive storytelling using the most recent advancements in software technology to usher in a new era of fictionalized ' +
+      'social interactions. The H.G.E. in its current form leverages tools such as Gum Domains, Shadow Drive and the Metaplex Bubblegum ' +
+      'state compression program to provide a small taste of what is possible.',
   },
   {
-    cardHeader: 'Interactive Fiction on Solana',
+    cardHeader: 'Reactive Interactive Fiction on Solana',
     cardBodyText:
       'Genesys Realms, along with the Hermes Game Engine, exemplifies Only Possible On Solana',
   },
