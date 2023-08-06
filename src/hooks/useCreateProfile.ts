@@ -1,5 +1,5 @@
 import { PublicKey } from '@solana/web3.js';
-import { useGumContext, useUploaderContext } from '@gumhq/react-sdk';
+import { SessionWalletInterface, useGumContext, useUploaderContext } from '@gumhq/react-sdk';
 import { ShadowFile } from '@shadow-drive/sdk';
 import { Buffer } from 'buffer';
 
@@ -12,7 +12,7 @@ export const useProfileCreate = () => {
     domainName: string,
     profileName: string,
     publicKey: string,
-    wallet: any
+    wallet: SessionWalletInterface
   ) => {
     try {
       if (!publicKey) {
@@ -41,21 +41,21 @@ export const useProfileCreate = () => {
         file: metadataBuffer,
       };
 
-      // const bufferData = profileMetadata.file.toString();
-      // const parsedFile = JSON.parse(bufferData);
-      //
-      // console.log('parsed file data:', parsedFile);
+      const bufferData = profileMetadata.file.toString();
+      const parsedFile = JSON.parse(bufferData);
+
+      console.log('parsed file data:', parsedFile);
       console.log('wallet: ', wallet);
       const uploadResponse = await handleUpload(profileMetadata, wallet);
-      console.log('Upload response', uploadResponse?.signature);
+      console.log('Upload response', uploadResponse);
       // if (!uploadResponse) {
       //   console.error('Error uploading profile metadata');
       //   return;
       // }
 
-      const profileResponse = await sdk.profile.createProfileWithGumDomain(
+      const profileResponse = await sdk.profile.create(
         uploadResponse!.url,
-        domainName,
+        wallet.ownerPublicKey!,
         new PublicKey(publicKey),
         new PublicKey(publicKey)
       );

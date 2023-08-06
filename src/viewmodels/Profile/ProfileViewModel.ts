@@ -3,6 +3,7 @@ import { singleton } from 'tsyringe';
 import { ProfileModel } from '~/models/Profile/ProfileModel';
 import { ShadowDriveVersion, ShdwDrive } from '@shadow-drive/sdk';
 import { Connection } from '@solana/web3.js';
+import { SessionWalletInterface } from '@gumhq/react-sdk';
 import { StandardViewModel } from '../../../reactReactive/viewmodels/StandardViewModel';
 
 @singleton()
@@ -14,13 +15,23 @@ export class ProfileViewModel extends StandardViewModel {
   domainName: string;
   profileName: string;
 
+  storageName: string;
+  storageSize: string;
+  version: ShadowDriveVersion;
+  wallet: SessionWalletInterface | undefined | Uint8Array;
+
   constructor() {
     super();
     this.publicKey = '';
-    this.domainName = '';
-    this.profileName = '';
+    this.domainName = 'brian';
+    this.profileName = 'janus';
     this.profilePicture = '';
     this.characters = [];
+
+    this.storageName = 'opos';
+    this.storageSize = '10MB';
+    this.version = 'v2';
+    this.wallet = undefined;
 
     makeObservable(this, {
       publicKey: observable,
@@ -29,6 +40,10 @@ export class ProfileViewModel extends StandardViewModel {
       domainName: observable,
       profileName: observable,
 
+      storageName: observable,
+      storageSize: observable,
+      wallet: observable,
+
       setPublicKey: action.bound,
       setProfilePicture: action.bound,
       setCharacters: action.bound,
@@ -36,6 +51,10 @@ export class ProfileViewModel extends StandardViewModel {
       setDomainName: action.bound,
       setProfileName: action.bound,
       createStorageAccount: action.bound,
+
+      setStorageName: action.bound,
+      setStorageSize: action.bound,
+      setWallet: action.bound,
     });
   }
 
@@ -43,6 +62,18 @@ export class ProfileViewModel extends StandardViewModel {
   protected onInitialize(): void {}
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   protected onEnd(): void {}
+
+  setStorageName(storageName: string): void {
+    this.storageName = storageName;
+  }
+
+  setStorageSize(storageSize: string): void {
+    this.storageSize = storageSize;
+  }
+
+  setWallet(wallet: Uint8Array | undefined): void {
+    this.wallet = wallet;
+  }
 
   setDomainName(domainName: string): void {
     this.domainName = domainName;
@@ -75,9 +106,9 @@ export class ProfileViewModel extends StandardViewModel {
     name: string,
     size: string,
     version: ShadowDriveVersion,
-    wallet: any,
+    wallet: SessionWalletInterface | undefined | Uint8Array,
     connection: Connection
-  ): Promise<string | undefined> {
+  ): Promise<string> {
     const shdwDrive = await new ShdwDrive(connection, wallet).init();
     console.log('drive: ', shdwDrive);
     const drive = await shdwDrive.createStorageAccount(name, size, version);
