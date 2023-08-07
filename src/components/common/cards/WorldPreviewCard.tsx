@@ -11,7 +11,6 @@ export const WorldPreviewCard = observer(
     storyDescription,
     storyImage,
     storyAltText,
-    publicKey,
   }: WorldPreviewCardProps): JSX.Element => {
     const characterCreateVM = useViewModel<CharacterCreationViewModel>(CharacterCreationViewModel);
 

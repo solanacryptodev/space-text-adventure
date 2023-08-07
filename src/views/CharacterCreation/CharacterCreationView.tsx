@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react-lite';
 import { JSX } from 'react';
-import { CharacterCreationViewModel } from '~/viewmodels/CharacterCreation/CharacterCreationViewModel';
-import { useViewModel } from '../../../reactReactive/viewmodels/useViewModel';
+// import { CharacterCreationViewModel } from '~/viewmodels/CharacterCreation/CharacterCreationViewModel';
+// import { useViewModel } from '../../../reactReactive/viewmodels/useViewModel';
 
 export const CharacterCreationView = observer((): JSX.Element => {
-  const characterCreationVM = useViewModel<CharacterCreationViewModel>(CharacterCreationViewModel);
+  // const characterCreationVM = useViewModel<CharacterCreationViewModel>(CharacterCreationViewModel);
 
   return (
     <>
