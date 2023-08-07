@@ -4,6 +4,7 @@ import { ProfileModel } from '~/models/Profile/ProfileModel';
 import { ShadowDriveVersion, ShdwDrive } from '@shadow-drive/sdk';
 import { Connection } from '@solana/web3.js';
 import { SessionWalletInterface } from '@gumhq/react-sdk';
+import { AnchorWallet } from '@solana/wallet-adapter-react';
 import { StandardViewModel } from '../../../reactReactive/viewmodels/StandardViewModel';
 
 @singleton()
@@ -20,6 +21,8 @@ export class ProfileViewModel extends StandardViewModel {
   version: ShadowDriveVersion;
   wallet: SessionWalletInterface | undefined | Uint8Array;
 
+  musicPlaying: boolean;
+
   constructor() {
     super();
     this.publicKey = '';
@@ -33,13 +36,15 @@ export class ProfileViewModel extends StandardViewModel {
     this.version = 'v2';
     this.wallet = undefined;
 
+    this.musicPlaying = true;
+
     makeObservable(this, {
       publicKey: observable,
       profilePicture: observable,
       characters: observable,
       domainName: observable,
       profileName: observable,
-
+      musicPlaying: observable,
       storageName: observable,
       storageSize: observable,
       wallet: observable,
@@ -51,6 +56,8 @@ export class ProfileViewModel extends StandardViewModel {
       setDomainName: action.bound,
       setProfileName: action.bound,
       createStorageAccount: action.bound,
+      setMusicPlaying: action.bound,
+      toggleMusic: action.bound,
 
       setStorageName: action.bound,
       setStorageSize: action.bound,
@@ -97,6 +104,14 @@ export class ProfileViewModel extends StandardViewModel {
     this.characters = characters;
   }
 
+  setMusicPlaying(playing: boolean): void {
+    this.musicPlaying = playing;
+  }
+
+  toggleMusic(): void {
+    this.musicPlaying = !this.musicPlaying;
+  }
+
   submitProfileToModel(): void {
     this.profileModel.submitProfile(this.domainName, this.profileName, this.publicKey);
     console.log('Profile submitted VM');
@@ -106,11 +121,10 @@ export class ProfileViewModel extends StandardViewModel {
     name: string,
     size: string,
     version: ShadowDriveVersion,
-    wallet: SessionWalletInterface | undefined | Uint8Array,
+    wallet: AnchorWallet | undefined,
     connection: Connection
   ): Promise<string> {
     const shdwDrive = await new ShdwDrive(connection, wallet).init();
-    console.log('drive: ', shdwDrive);
     const drive = await shdwDrive.createStorageAccount(name, size, version);
     console.log('shdw bucket: ', drive.shdw_bucket);
     return drive.shdw_bucket;
