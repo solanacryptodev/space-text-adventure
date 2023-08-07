@@ -1,5 +1,6 @@
 import { singleton } from 'tsyringe';
 import { action, makeObservable, observable } from 'mobx';
+import router from 'next/router';
 import { StandardViewModel } from '../../../reactReactive/viewmodels/StandardViewModel';
 
 @singleton()
@@ -7,7 +8,7 @@ export class CharacterCreationViewModel extends StandardViewModel {
   characterModalActive: boolean;
   constructor() {
     super();
-    this.characterModalActive = false;
+    this.characterModalActive = true;
 
     makeObservable(this, {
       characterModalActive: observable,
@@ -26,10 +27,13 @@ export class CharacterCreationViewModel extends StandardViewModel {
   validatePlayerCharacter(): void {
     // get SHDW drive world storage
     // see if selected character has been added
+    router.push({ pathname: '/game' });
   }
 
   displayCharacterCreateModal(active: boolean): boolean {
     this.characterModalActive = active;
+    router.push({ pathname: '/character' });
+
     return this.characterModalActive;
   }
 }

@@ -1,18 +1,18 @@
 import React, { JSX } from 'react';
 import Head from 'next/head';
-import { LandingView } from '~/views/Landing/LandingView';
 import { observer } from 'mobx-react-lite';
+import { GameView } from '~/views/Game/GameView';
 
-function Home(): JSX.Element {
+function Game(): JSX.Element {
   return (
     <>
       <Head>
-        <title>Genesys Realms - Home</title>
+        <title>Genesys Realms - OPOS: The Legend of the Builders</title>
         <meta name="description" content="A text-based game powered by the Solana blockchain" />
         <link rel="icon" href="/genesys_realms_icon.jpeg" />
       </Head>
 
-      <LandingView />
+      <GameView />
     </>
   );
 }
@@ -23,4 +23,4 @@ export async function getServerSideProps(): Promise<{ props: any }> {
   };
 }
 
-export default observer(Home);
+export default observer(Game);

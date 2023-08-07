@@ -3,8 +3,9 @@ import { singleton } from 'tsyringe';
 import { ProfileModel } from '~/models/Profile/ProfileModel';
 import { ShadowDriveVersion, ShdwDrive } from '@shadow-drive/sdk';
 import { Connection } from '@solana/web3.js';
-import { SessionWalletInterface } from '@gumhq/react-sdk';
+import { SessionWalletInterface, GumNameService, SDK } from '@gumhq/react-sdk';
 import { AnchorWallet } from '@solana/wallet-adapter-react';
+import { WalletModel } from '~/models/Wallet/WalletModel';
 import { StandardViewModel } from '../../../reactReactive/viewmodels/StandardViewModel';
 
 @singleton()
@@ -22,21 +23,23 @@ export class ProfileViewModel extends StandardViewModel {
   wallet: SessionWalletInterface | undefined | Uint8Array;
 
   musicPlaying: boolean;
+  verified: boolean;
 
   constructor() {
     super();
     this.publicKey = '';
-    this.domainName = 'brian';
-    this.profileName = 'janus';
+    this.domainName = '';
+    this.profileName = '';
     this.profilePicture = '';
     this.characters = [];
 
-    this.storageName = 'opos';
-    this.storageSize = '10MB';
+    this.storageName = '';
+    this.storageSize = '';
     this.version = 'v2';
     this.wallet = undefined;
 
     this.musicPlaying = true;
+    this.verified = false;
 
     makeObservable(this, {
       publicKey: observable,
@@ -48,6 +51,7 @@ export class ProfileViewModel extends StandardViewModel {
       storageName: observable,
       storageSize: observable,
       wallet: observable,
+      verified: observable,
 
       setPublicKey: action.bound,
       setProfilePicture: action.bound,
@@ -58,6 +62,7 @@ export class ProfileViewModel extends StandardViewModel {
       createStorageAccount: action.bound,
       setMusicPlaying: action.bound,
       toggleMusic: action.bound,
+      verifyDomainName: action.bound,
 
       setStorageName: action.bound,
       setStorageSize: action.bound,
@@ -69,6 +74,16 @@ export class ProfileViewModel extends StandardViewModel {
   protected onInitialize(): void {}
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   protected onEnd(): void {}
+
+  // protected createReactions(): void {
+  //   this.addReaction(
+  //       autorun(() => {
+  //         if ( this.sdk === null ) {
+  //           this.setSDK()
+  //         }
+  //       })
+  //   )
+  // }
 
   setStorageName(storageName: string): void {
     this.storageName = storageName;
@@ -115,6 +130,10 @@ export class ProfileViewModel extends StandardViewModel {
   submitProfileToModel(): void {
     this.profileModel.submitProfile(this.domainName, this.profileName, this.publicKey);
     console.log('Profile submitted VM');
+  }
+
+  verifyDomainName(verified: boolean): void {
+    this.verified = verified;
   }
 
   async createStorageAccount(

@@ -23,7 +23,7 @@ export interface TextCardProps {
 
 export interface CharacterCreationProps {
   characterName: string;
-  characterAge: number | string;
+  characterAge?: number | string;
 }
 
 export interface WalletContextProvider {
