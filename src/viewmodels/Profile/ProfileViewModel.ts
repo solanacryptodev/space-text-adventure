@@ -1,11 +1,12 @@
-import { action, observable, makeObservable } from 'mobx';
+import { action, observable, makeObservable, toJS, computed, autorun } from 'mobx';
 import { singleton } from 'tsyringe';
 import { ProfileModel } from '~/models/Profile/ProfileModel';
-import { ShadowDriveVersion, ShdwDrive } from '@shadow-drive/sdk';
+import { ListObjectsResponse, ShadowDriveVersion, ShdwDrive } from '@shadow-drive/sdk';
 import { Connection } from '@solana/web3.js';
-import { SessionWalletInterface, GumNameService, SDK } from '@gumhq/react-sdk';
+import { SessionWalletInterface } from '@gumhq/react-sdk';
 import { AnchorWallet } from '@solana/wallet-adapter-react';
-import { WalletModel } from '~/models/Wallet/WalletModel';
+import router from 'next/router';
+import { fill, get } from 'lodash';
 import { StandardViewModel } from '../../../reactReactive/viewmodels/StandardViewModel';
 
 @singleton()
@@ -13,7 +14,6 @@ export class ProfileViewModel extends StandardViewModel {
   protected profileModel = this.addDependency(ProfileModel);
   publicKey: string | undefined;
   profilePicture: string | undefined;
-  characters: string[] | undefined;
   domainName: string;
   profileName: string;
 
@@ -23,6 +23,7 @@ export class ProfileViewModel extends StandardViewModel {
   wallet: SessionWalletInterface | undefined | Uint8Array;
 
   musicPlaying: boolean;
+  music: string[];
   verified: boolean;
 
   constructor() {
@@ -31,23 +32,23 @@ export class ProfileViewModel extends StandardViewModel {
     this.domainName = '';
     this.profileName = '';
     this.profilePicture = '';
-    this.characters = [];
 
     this.storageName = '';
     this.storageSize = '';
     this.version = 'v2';
     this.wallet = undefined;
 
-    this.musicPlaying = true;
+    this.musicPlaying = false;
+    this.music = [];
     this.verified = false;
 
     makeObservable(this, {
       publicKey: observable,
       profilePicture: observable,
-      characters: observable,
       domainName: observable,
       profileName: observable,
       musicPlaying: observable,
+      music: observable,
       storageName: observable,
       storageSize: observable,
       wallet: observable,
@@ -55,35 +56,46 @@ export class ProfileViewModel extends StandardViewModel {
 
       setPublicKey: action.bound,
       setProfilePicture: action.bound,
-      setCharacters: action.bound,
       submitProfileToModel: action.bound,
       setDomainName: action.bound,
       setProfileName: action.bound,
       createStorageAccount: action.bound,
       setMusicPlaying: action.bound,
+      addMusic: action.bound,
       toggleMusic: action.bound,
       verifyDomainName: action.bound,
 
       setStorageName: action.bound,
       setStorageSize: action.bound,
       setWallet: action.bound,
+
+      getMusic: computed,
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  protected onInitialize(): void {}
+  protected onInitialize(): void {
+    if (!this.musicPlaying) {
+      this.setMusicPlaying(true);
+      console.log('music playing? ', this.musicPlaying);
+    }
+  }
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   protected onEnd(): void {}
 
   // protected createReactions(): void {
   //   this.addReaction(
-  //       autorun(() => {
-  //         if ( this.sdk === null ) {
-  //           this.setSDK()
-  //         }
-  //       })
-  //   )
+  //     autorun(() => {
+  //       if (!this.musicPlaying) {
+  //         this.setMusicPlaying(true);
+  //         console.log('music playing? ', this.musicPlaying);
+  //       }
+  //     })
+  //   );
   // }
+
+  get getMusic(): string[] {
+    return this.music;
+  }
 
   setStorageName(storageName: string): void {
     this.storageName = storageName;
@@ -99,12 +111,10 @@ export class ProfileViewModel extends StandardViewModel {
 
   setDomainName(domainName: string): void {
     this.domainName = domainName;
-    console.log('Domain name set to: ', this.domainName);
   }
 
   setProfileName(profileName: string): void {
     this.profileName = profileName;
-    console.log('Profile name set to: ', this.profileName);
   }
 
   setPublicKey(publicKey: string | undefined): void {
@@ -115,12 +125,13 @@ export class ProfileViewModel extends StandardViewModel {
     this.profilePicture = profilePicture;
   }
 
-  setCharacters(characters: string[]): void {
-    this.characters = characters;
-  }
-
   setMusicPlaying(playing: boolean): void {
     this.musicPlaying = playing;
+  }
+
+  addMusic(musicTrack: string): string[] {
+    toJS(this.music.push(musicTrack));
+    return toJS(this.music);
   }
 
   toggleMusic(): void {
@@ -134,6 +145,10 @@ export class ProfileViewModel extends StandardViewModel {
 
   verifyDomainName(verified: boolean): void {
     this.verified = verified;
+  }
+
+  backToHome(): void {
+    router.push({ pathname: '/' });
   }
 
   async createStorageAccount(

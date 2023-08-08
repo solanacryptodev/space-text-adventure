@@ -1,5 +1,5 @@
 import React, { JSX } from 'react';
-import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
+import { useAnchorWallet, useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { GUM_TLD_ACCOUNT, GumNameService, useGumContext } from '@gumhq/react-sdk';
 import { PublicKey } from '@solana/web3.js';
 import { LandingHeaderView } from '~/views/Landing/LandingHeader/LandingHeaderView';
@@ -7,20 +7,24 @@ import { LandingSidebarView } from '~/views/Landing/LandingSidebar/Sidebar';
 import { ProfileViewModel } from '~/viewmodels/Profile/ProfileViewModel';
 import { observer } from 'mobx-react-lite';
 import { WalletModel } from '~/models/Wallet/WalletModel';
+import { CharacterCreationViewModel } from '~/viewmodels/CharacterCreation/CharacterCreationViewModel';
+import { useShadowDrive } from '~/hooks/useShadowDrive';
 import { useViewModel } from '../../../reactReactive/viewmodels/useViewModel';
 
 export const ProfileView = observer((): JSX.Element => {
   const profileVM = useViewModel<ProfileViewModel>(ProfileViewModel);
   const walletVM = useViewModel<WalletModel>(WalletModel);
-  const { wallet } = walletVM;
+  const characterVM = useViewModel<CharacterCreationViewModel>(CharacterCreationViewModel);
+  // const connection = useConnection();
   const walletSet = useAnchorWallet();
   const walletConnect = useWallet();
   const { sdk } = useGumContext();
+  // const { getFilesFromWorldStorage } = useShadowDrive();
   const gum = new GumNameService(sdk);
 
   const verifyDomain = async () => {
     const domainName = await gum
-      .getNameservicesByAuthority(wallet)
+      .getNameservicesByAuthority(walletVM.wallet)
       .then((data) => data.map((domainData) => domainData.name));
     const removedName = domainName.at(0);
     if (domainName.length != 0) {
@@ -50,7 +54,8 @@ export const ProfileView = observer((): JSX.Element => {
           <div className="bg-[#BBC8DE] rounded-lg shadow dark:bg-gray-700">
             <button
               type="button"
-              className="relative top-3 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              onClick={() => profileVM.backToHome()}
+              className="relative top-3 text-gray-400 bg-transparent hover:bg-[#FF7F50] hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
             >
               <svg
                 className="w-3 h-3"
@@ -125,32 +130,8 @@ export const ProfileView = observer((): JSX.Element => {
                     required
                   />
                 </div>
-                <div className="flex justify-between">
-                  <div className="flex items-start">
-                    <div className="flex items-center h-5">
-                      <input
-                        id="remember"
-                        type="checkbox"
-                        value=""
-                        className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-600 dark:border-gray-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
-                        required
-                      />
-                    </div>
-                    <label
-                      htmlFor="remember"
-                      className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                    >
-                      Remember me
-                    </label>
-                  </div>
-                  <a
-                    onClick={() => verifyDomain()}
-                    className="text-sm text-blue-700 hover:underline dark:text-blue-500"
-                  >
-                    Lost Password?
-                  </a>
-                </div>
-                {wallet && (
+
+                {profileVM.verified ? (
                   <button
                     className="bg-[#FF7F50]"
                     onClick={async (event) => {
@@ -165,15 +146,26 @@ export const ProfileView = observer((): JSX.Element => {
                       console.log(`screenName: ${screenName}`);
                     }}
                   >
-                    Create Domain
+                    Create Character
+                  </button>
+                ) : (
+                  <button
+                    className="bg-[#FF7F50]"
+                    onClick={async (event) => {
+                      event.preventDefault();
+                      const nameService = new GumNameService(sdk);
+
+                      const screenName = await nameService.getOrCreateDomain(
+                        GUM_TLD_ACCOUNT,
+                        profileVM.domainName,
+                        walletSet?.publicKey as PublicKey
+                      );
+                      console.log(`screenName: ${screenName}`);
+                    }}
+                  >
+                    Create Domain and Character
                   </button>
                 )}
-                <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
-                  Not registered?{' '}
-                  <a href="#" className="text-blue-700 hover:underline dark:text-blue-500">
-                    Create account
-                  </a>
-                </div>
               </form>
             </div>
           </div>

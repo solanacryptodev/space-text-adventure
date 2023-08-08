@@ -1,17 +1,22 @@
 import { singleton } from 'tsyringe';
 import { action, makeObservable, observable } from 'mobx';
 import router from 'next/router';
+import { Characters } from '~/lib/types/globalTypes';
 import { StandardViewModel } from '../../../reactReactive/viewmodels/StandardViewModel';
 
 @singleton()
 export class CharacterCreationViewModel extends StandardViewModel {
   characterModalActive: boolean;
+  characters: Characters[];
+
   constructor() {
     super();
     this.characterModalActive = true;
+    this.characters = [];
 
     makeObservable(this, {
       characterModalActive: observable,
+      characters: observable,
 
       validatePlayerCharacter: action.bound,
       displayCharacterCreateModal: action.bound,

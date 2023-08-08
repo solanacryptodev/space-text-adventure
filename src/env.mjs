@@ -31,6 +31,7 @@ export const env = createEnv({
    */
   client: {
     NEXT_PUBLIC_SOLANA_MAINNET_ENDPOINT: z.string().url(),
+    NEXT_PUBLIC_WORLD_STORAGE_SHDW: z.string(),
     // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
   },
 
@@ -45,6 +46,7 @@ export const env = createEnv({
     // DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
     // DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
     NEXT_PUBLIC_SOLANA_MAINNET_ENDPOINT: process.env.NEXT_PUBLIC_SOLANA_MAINNET_ENDPOINT,
+    NEXT_PUBLIC_WORLD_STORAGE_SHDW: process.env.NEXT_PUBLIC_WORLD_STORAGE_SHDW,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

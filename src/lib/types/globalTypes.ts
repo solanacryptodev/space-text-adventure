@@ -21,7 +21,7 @@ export interface TextCardProps {
   cardBodyText?: string;
 }
 
-export interface CharacterCreationProps {
+export interface Characters {
   characterName: string;
   characterAge?: number | string;
 }
