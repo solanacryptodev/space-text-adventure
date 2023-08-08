@@ -27,7 +27,7 @@ export const LandingMain = observer((): JSX.Element => {
 
   if (walletsConnection.connected) {
     walletVM.setPublicKey(wallet!.publicKey.toString()).then();
-    profileVM.setMusicPlaying(true);
+    // profileVM.setMusicPlaying(true); // seems to break Play Button toggle
     playShdwMusic().then();
   } else if (!walletsConnection.connected) {
     walletVM.setPublicKey('').then();

@@ -1,12 +1,11 @@
-import { action, observable, makeObservable, toJS, computed, autorun } from 'mobx';
+import { action, observable, makeObservable, toJS, computed } from 'mobx';
 import { singleton } from 'tsyringe';
 import { ProfileModel } from '~/models/Profile/ProfileModel';
-import { ListObjectsResponse, ShadowDriveVersion, ShdwDrive } from '@shadow-drive/sdk';
+import { ShadowDriveVersion, ShdwDrive } from '@shadow-drive/sdk';
 import { Connection } from '@solana/web3.js';
 import { SessionWalletInterface } from '@gumhq/react-sdk';
 import { AnchorWallet } from '@solana/wallet-adapter-react';
 import router from 'next/router';
-import { fill, get } from 'lodash';
 import { StandardViewModel } from '../../../reactReactive/viewmodels/StandardViewModel';
 
 @singleton()
@@ -38,7 +37,7 @@ export class ProfileViewModel extends StandardViewModel {
     this.version = 'v2';
     this.wallet = undefined;
 
-    this.musicPlaying = false;
+    this.musicPlaying = true;
     this.music = [];
     this.verified = false;
 
