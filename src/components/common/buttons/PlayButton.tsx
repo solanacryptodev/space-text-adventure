@@ -10,8 +10,7 @@ export const PlayButton = observer((): JSX.Element => {
   const music = landingSoundtrack.at(0) as string;
   const shdwEnv = process.env.NEXT_PUBLIC_WORLD_STORAGE_SHDW;
   const shdwUrl = `${shdwEnv}/${music}`;
-  console.log('sdhwUrl: ', shdwUrl);
-  const [play, { stop }] = useSound(shdwUrl, { volume: 0.15 });
+  const [play, { stop }] = useSound(shdwUrl, { volume: 0.1 });
 
   if (profileVM.musicPlaying) {
     play();

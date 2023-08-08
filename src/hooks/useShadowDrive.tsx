@@ -30,8 +30,8 @@ export const useShadowDrive = () => {
   const getFilesFromWorldStorage = async (
     connection: Connection,
     wallet: AnchorWallet | undefined
-  ): Promise<ListObjectsResponse> => {
-    let files: any;
+  ): Promise<string[]> => {
+    let files: string[] = [];
     try {
       // via the Mercury API, get all ShadowFiles from storage
       const shdwDrive = await new ShdwDrive(connection, wallet).init();

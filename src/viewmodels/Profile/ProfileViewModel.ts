@@ -73,12 +73,8 @@ export class ProfileViewModel extends StandardViewModel {
     });
   }
 
-  protected onInitialize(): void {
-    if (!this.musicPlaying) {
-      this.setMusicPlaying(true);
-      console.log('music playing? ', this.musicPlaying);
-    }
-  }
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  protected onInitialize(): void {}
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   protected onEnd(): void {}
 

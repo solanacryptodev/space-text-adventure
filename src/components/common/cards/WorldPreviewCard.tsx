@@ -37,7 +37,7 @@ export const WorldPreviewCard = observer(
               onClick={() => characterCreateVM.validatePlayerCharacter()}
               className="items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#FF7F50] rounded-lg hover:bg-[#151B25] focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
-              Join Game
+              Play the Game
             </a>
           </div>
         </div>
