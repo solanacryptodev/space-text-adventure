@@ -125,7 +125,7 @@ export const ProfileView = observer((): JSX.Element => {
                       event.preventDefault();
                       await uploadCharacterFiles(
                         connection.connection,
-                        walletSet,
+                        walletConnect,
                         profileVM.domainName,
                         characterVM.characterName,
                         characterVM.characterAge
@@ -141,12 +141,18 @@ export const ProfileView = observer((): JSX.Element => {
                       event.preventDefault();
                       const nameService = new GumNameService(sdk);
 
-                      const screenName = await nameService.getOrCreateDomain(
+                      await nameService.getOrCreateDomain(
                         GUM_TLD_ACCOUNT,
                         profileVM.domainName,
                         walletSet?.publicKey as PublicKey
                       );
-                      console.log(`screenName: ${screenName}`);
+                      await uploadCharacterFiles(
+                        connection.connection,
+                        walletConnect,
+                        profileVM.domainName,
+                        characterVM.characterName,
+                        characterVM.characterAge
+                      );
                     }}
                   >
                     Create Domain and Character

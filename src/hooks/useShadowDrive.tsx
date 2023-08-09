@@ -1,7 +1,9 @@
-import { ShdwDrive, ShadowDriveVersion, ShadowFile } from '@shadow-drive/sdk';
+import { ShdwDrive, ShadowDriveVersion } from '@shadow-drive/sdk';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { AnchorWallet } from '@solana/wallet-adapter-react';
 import { CharacterAndProfileData } from '~/lib/types/globalTypes';
+import { Buffer } from 'buffer';
+import * as anchor from '@project-serum/anchor';
 
 export const useShadowDrive = () => {
   const createStorageAccount = async (
@@ -22,17 +24,16 @@ export const useShadowDrive = () => {
   /* Uploaded files can be profiles saved to world storage */
   const uploadCharacterFiles = async (
     connection: Connection,
-    wallet: AnchorWallet | undefined,
+    wallet: any,
     gumDomainName: string,
     characterName: string,
     characterAge: string
   ): Promise<void> => {
     try {
-      // TODO: get this working, almost there
       // via the Mercury API, upload ShadowFiles to storage
       const shdwDrive = await new ShdwDrive(connection, wallet).init();
       const getStorageAccounts = await shdwDrive.getStorageAccounts('v2');
-      const storageAccountKey = getStorageAccounts.at(0)!.publicKey;
+      const storageAccountKey = new anchor.web3.PublicKey(getStorageAccounts[0]!.publicKey);
       const profileAndCharacterData: CharacterAndProfileData = {
         gumProfileDomain: gumDomainName,
         characters: [
@@ -43,14 +44,13 @@ export const useShadowDrive = () => {
         ],
       };
 
-      const gameDataBuffer = Buffer.from(JSON.stringify(profileAndCharacterData));
+      const gameData = JSON.stringify(profileAndCharacterData);
+      const blob = new Blob([Buffer.from(gameData)], { type: 'application/json' });
+      const myFile = new File([blob], `${gumDomainName}_Character_Data.json`, {
+        type: 'application/json',
+      });
 
-      const fileToUpload: ShadowFile = {
-        name: `${gumDomainName} Character Data`,
-        file: gameDataBuffer,
-      };
-
-      const uploadFile = await shdwDrive.uploadFile(storageAccountKey, fileToUpload);
+      const uploadFile = await shdwDrive.uploadFile(storageAccountKey, myFile);
       console.log('uploaded file: ', uploadFile);
     } catch (error) {
       console.log('upload error: ', error);
@@ -77,6 +77,17 @@ export const useShadowDrive = () => {
     }
     return files;
   };
+
+  // const editInventoryShdwFile = async (connection: Connection, wallet: any): Promise<void> => {
+  //   try {
+  //     const shdwDrive = await new ShdwDrive(connection, wallet).init();
+  //     const getStorageAccounts = await shdwDrive.getStorageAccounts('v2');
+  //     const storageAccountKey = new anchor.web3.PublicKey(getStorageAccounts[0]!.publicKey);
+  //     await shdwDrive.editFile(storageAccountKey, '', );
+  //   } catch (error) {
+  //     console.log('error editing files: ', error);
+  //   }
+  // };
 
   return { createStorageAccount, uploadCharacterFiles, getFilesFromWorldStorage };
 };
