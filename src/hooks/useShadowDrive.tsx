@@ -1,6 +1,7 @@
-import { ShdwDrive, ShadowDriveVersion, ListObjectsResponse } from '@shadow-drive/sdk';
+import { ShdwDrive, ShadowDriveVersion, ShadowFile } from '@shadow-drive/sdk';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { AnchorWallet } from '@solana/wallet-adapter-react';
+import { CharacterAndProfileData } from '~/lib/types/globalTypes';
 
 export const useShadowDrive = () => {
   const createStorageAccount = async (
@@ -19,9 +20,38 @@ export const useShadowDrive = () => {
   };
 
   /* Uploaded files can be profiles saved to world storage */
-  const uploadFilesToWorldStorage = async (): Promise<void> => {
+  const uploadCharacterFiles = async (
+    connection: Connection,
+    wallet: AnchorWallet | undefined,
+    gumDomainName: string,
+    characterName: string,
+    characterAge: string
+  ): Promise<void> => {
     try {
+      // TODO: get this working, almost there
       // via the Mercury API, upload ShadowFiles to storage
+      const shdwDrive = await new ShdwDrive(connection, wallet).init();
+      const getStorageAccounts = await shdwDrive.getStorageAccounts('v2');
+      const storageAccountKey = getStorageAccounts.at(0)!.publicKey;
+      const profileAndCharacterData: CharacterAndProfileData = {
+        gumProfileDomain: gumDomainName,
+        characters: [
+          {
+            characterName,
+            characterAge,
+          },
+        ],
+      };
+
+      const gameDataBuffer = Buffer.from(JSON.stringify(profileAndCharacterData));
+
+      const fileToUpload: ShadowFile = {
+        name: `${gumDomainName} Character Data`,
+        file: gameDataBuffer,
+      };
+
+      const uploadFile = await shdwDrive.uploadFile(storageAccountKey, fileToUpload);
+      console.log('uploaded file: ', uploadFile);
     } catch (error) {
       console.log('upload error: ', error);
     }
@@ -48,5 +78,5 @@ export const useShadowDrive = () => {
     return files;
   };
 
-  return { createStorageAccount, uploadFilesToWorldStorage, getFilesFromWorldStorage };
+  return { createStorageAccount, uploadCharacterFiles, getFilesFromWorldStorage };
 };

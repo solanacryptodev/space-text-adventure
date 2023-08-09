@@ -8,18 +8,26 @@ import { StandardViewModel } from '../../../reactReactive/viewmodels/StandardVie
 export class CharacterCreationViewModel extends StandardViewModel {
   characterModalActive: boolean;
   characters: Characters[];
+  characterName: string;
+  characterAge: string;
 
   constructor() {
     super();
     this.characterModalActive = true;
     this.characters = [];
+    this.characterName = '';
+    this.characterAge = '';
 
     makeObservable(this, {
       characterModalActive: observable,
+      characterName: observable,
+      characterAge: observable,
       characters: observable,
 
       validatePlayerCharacter: action.bound,
       displayCharacterCreateModal: action.bound,
+      setCharacterName: action.bound,
+      setCharacterAge: action.bound,
     });
   }
 
@@ -40,5 +48,13 @@ export class CharacterCreationViewModel extends StandardViewModel {
     router.push({ pathname: '/character' });
 
     return this.characterModalActive;
+  }
+
+  setCharacterName(name: string): void {
+    this.characterName = name;
+  }
+
+  setCharacterAge(age: string): void {
+    this.characterAge = age;
   }
 }

@@ -26,6 +26,11 @@ export interface Characters {
   characterAge?: number | string;
 }
 
+export interface CharacterAndProfileData {
+  gumProfileDomain: string;
+  characters: Characters[];
+}
+
 export interface WalletContextProvider {
   children: ReactNode;
   endpoint: string;

@@ -9,17 +9,18 @@ import { observer } from 'mobx-react-lite';
 import { WalletModel } from '~/models/Wallet/WalletModel';
 import { CharacterCreationViewModel } from '~/viewmodels/CharacterCreation/CharacterCreationViewModel';
 import { useShadowDrive } from '~/hooks/useShadowDrive';
+import { CharacterCreationView } from '~/views/CharacterCreation/CharacterCreationView';
 import { useViewModel } from '../../../reactReactive/viewmodels/useViewModel';
 
 export const ProfileView = observer((): JSX.Element => {
   const profileVM = useViewModel<ProfileViewModel>(ProfileViewModel);
   const walletVM = useViewModel<WalletModel>(WalletModel);
   const characterVM = useViewModel<CharacterCreationViewModel>(CharacterCreationViewModel);
-  // const connection = useConnection();
+  const connection = useConnection();
   const walletSet = useAnchorWallet();
   const walletConnect = useWallet();
   const { sdk } = useGumContext();
-  // const { getFilesFromWorldStorage } = useShadowDrive();
+  const { uploadCharacterFiles } = useShadowDrive();
   const gum = new GumNameService(sdk);
 
   const verifyDomain = async () => {
@@ -114,36 +115,21 @@ export const ProfileView = observer((): JSX.Element => {
                     />
                   </div>
                 )}
-                <div>
-                  <label
-                    htmlFor="character"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Your Character Name
-                  </label>
-                  <input
-                    type="text"
-                    name="character"
-                    id="character"
-                    placeholder="Enter Character Name"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                    required
-                  />
-                </div>
+
+                <CharacterCreationView />
 
                 {profileVM.verified ? (
                   <button
                     className="bg-[#FF7F50]"
                     onClick={async (event) => {
                       event.preventDefault();
-                      const nameService = new GumNameService(sdk);
-
-                      const screenName = await nameService.getOrCreateDomain(
-                        GUM_TLD_ACCOUNT,
+                      await uploadCharacterFiles(
+                        connection.connection,
+                        walletSet,
                         profileVM.domainName,
-                        walletSet?.publicKey as PublicKey
+                        characterVM.characterName,
+                        characterVM.characterAge
                       );
-                      console.log(`screenName: ${screenName}`);
                     }}
                   >
                     Create Character
