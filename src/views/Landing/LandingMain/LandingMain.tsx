@@ -1,21 +1,34 @@
 import React, { JSX } from 'react';
 import { observer } from 'mobx-react-lite';
 import { WorldPreviewCard } from '~/components/common/cards/WorldPreviewCard';
-import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
+import { useAnchorWallet, useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { WorldImageCard } from '~/components/common/cards/WorldImageCard';
 import { demoPreviewCards, demoTextCards } from '~/lib/mockData';
 import { nanoid } from 'nanoid';
 import { WalletModel } from '~/models/Wallet/WalletModel';
 import { BasicTextCard } from '~/components/common/cards/BasicTextCard';
+import { useShadowDrive } from '~/hooks/useShadowDrive';
+import { ProfileViewModel } from '~/viewmodels/Profile/ProfileViewModel';
 import { useViewModel } from '../../../../reactReactive/viewmodels/useViewModel';
 
 export const LandingMain = observer((): JSX.Element => {
   const wallet = useAnchorWallet();
   const walletsConnection = useWallet();
+  const { getFilesFromWorldStorage } = useShadowDrive();
+  const connection = useConnection();
   const walletVM = useViewModel<WalletModel>(WalletModel);
+  const profileVM = useViewModel<ProfileViewModel>(ProfileViewModel);
+
+  const playShdwMusic = async () => {
+    const files = await getFilesFromWorldStorage(connection.connection, wallet);
+    const stringFiles = String(files);
+    profileVM.addMusic(stringFiles);
+  };
 
   if (walletsConnection.connected) {
     walletVM.setPublicKey(wallet!.publicKey.toString()).then();
+    // profileVM.setMusicPlaying(true); // seems to break Play Button toggle
+    playShdwMusic().then();
   } else if (!walletsConnection.connected) {
     walletVM.setPublicKey('').then();
   }
