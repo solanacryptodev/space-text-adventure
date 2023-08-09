@@ -6,9 +6,8 @@ import { useViewModel } from '../../../../reactReactive/viewmodels/useViewModel'
 
 export const PlayButton = observer((): JSX.Element => {
   const profileVM = useViewModel<ProfileViewModel>(ProfileViewModel);
-  const landingSoundtrack = profileVM.getMusic;
-  const music = landingSoundtrack.at(0) as string;
   const shdwEnv = process.env.NEXT_PUBLIC_WORLD_STORAGE_SHDW;
+  const music = process.env.NEXT_PUBLIC_SITE_THEME;
   const shdwUrl = `${shdwEnv}/${music}`;
   const [play, { stop }] = useSound(shdwUrl, { volume: 0.1 });
 
