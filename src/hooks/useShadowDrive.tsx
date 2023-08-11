@@ -57,11 +57,15 @@ export const useShadowDrive = () => {
     }
   };
 
-  const getFilesFromWorldStorage = async (
+  /*
+   * - Filename is the name of the document stored on the storage account
+   * */
+  const getFilesFromStorage = async (
     connection: Connection,
-    wallet: AnchorWallet | undefined
+    wallet: any,
+    fileName: string
   ): Promise<string[]> => {
-    let files: string[] = [];
+    const files: string[] = [];
     try {
       // via the Mercury API, get all ShadowFiles from storage
       const shdwDrive = await new ShdwDrive(connection, wallet).init();
@@ -71,11 +75,22 @@ export const useShadowDrive = () => {
       const storageAcctKey = storageAcct.storage_account;
       const storageFiles = await shdwDrive.listObjects(new PublicKey(storageAcctKey));
       console.log('stored objects: ', storageFiles.keys);
-      files = storageFiles.keys;
+
+      if (storageFiles.keys.includes(fileName)) {
+        // TODO: create a StorageModel to store a users shdw acct data
+        files.push(fileName);
+        await buildShadowUrl(String(storageAcctKey), fileName);
+      } else {
+        console.log(`${fileName} file not found`);
+      }
     } catch (error) {
       console.log('get files error: ', error);
     }
     return files;
+  };
+
+  const buildShadowUrl = async (storageAccountKey: string, fileName: string): Promise<string> => {
+    return `https://shdw-drive.genesysgo.net/${storageAccountKey}/${fileName}`;
   };
 
   // const editInventoryShdwFile = async (connection: Connection, wallet: any): Promise<void> => {
@@ -89,5 +104,5 @@ export const useShadowDrive = () => {
   //   }
   // };
 
-  return { createStorageAccount, uploadCharacterFiles, getFilesFromWorldStorage };
+  return { createStorageAccount, uploadCharacterFiles, getFilesFromStorage, buildShadowUrl };
 };

@@ -6,7 +6,6 @@ import { LandingHeaderView } from '~/views/Landing/LandingHeader/LandingHeaderVi
 import { LandingSidebarView } from '~/views/Landing/LandingSidebar/Sidebar';
 import { ProfileViewModel } from '~/viewmodels/Profile/ProfileViewModel';
 import { observer } from 'mobx-react-lite';
-import { WalletModel } from '~/models/Wallet/WalletModel';
 import { CharacterCreationViewModel } from '~/viewmodels/CharacterCreation/CharacterCreationViewModel';
 import { useShadowDrive } from '~/hooks/useShadowDrive';
 import { CharacterCreationView } from '~/views/CharacterCreation/CharacterCreationView';
@@ -14,32 +13,12 @@ import { useViewModel } from '../../../reactReactive/viewmodels/useViewModel';
 
 export const ProfileView = observer((): JSX.Element => {
   const profileVM = useViewModel<ProfileViewModel>(ProfileViewModel);
-  const walletVM = useViewModel<WalletModel>(WalletModel);
   const characterVM = useViewModel<CharacterCreationViewModel>(CharacterCreationViewModel);
   const connection = useConnection();
   const walletSet = useAnchorWallet();
   const walletConnect = useWallet();
   const { sdk } = useGumContext();
   const { uploadCharacterFiles } = useShadowDrive();
-  const gum = new GumNameService(sdk);
-
-  const verifyDomain = async () => {
-    const domainName = await gum
-      .getNameservicesByAuthority(walletVM.wallet)
-      .then((data) => data.map((domainData) => domainData.name));
-    const removedName = domainName.at(0);
-    if (domainName.length != 0) {
-      profileVM.verifyDomainName(true);
-      profileVM.setDomainName(removedName!);
-      console.log('domain name found');
-    } else {
-      console.log('no domain name found');
-    }
-  };
-
-  if (walletConnect.connected) {
-    verifyDomain().then();
-  }
 
   return (
     <div className="antialiased bg-gradient-to-b from-[#151B25] to-[#000000] dark:bg-gray-900">
