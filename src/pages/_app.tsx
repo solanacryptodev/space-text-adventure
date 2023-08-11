@@ -16,6 +16,7 @@ import GumSessionProvider from '~/components/SessionProvider/GumSessionProvider'
 
 import { mercuryApi } from '~/utils/api';
 import '~/styles/globals.css';
+import ProfileDataProvider from '~/hooks/profileDataProvider';
 
 require('@solana/wallet-adapter-react-ui/styles.css');
 
@@ -34,7 +35,9 @@ const TextGameApp: AppType<{ session: Session | null }> = ({
       <UseGumSDKProvider>
         <SessionProvider session={session}>
           <GumSessionProvider>
-            <Component {...pageProps} />
+            <ProfileDataProvider>
+              <Component {...pageProps} />
+            </ProfileDataProvider>
           </GumSessionProvider>
         </SessionProvider>
       </UseGumSDKProvider>
