@@ -34,6 +34,7 @@ export const useShadowDrive = () => {
       const shdwDrive = await new ShdwDrive(connection, wallet).init();
       const getStorageAccounts = await shdwDrive.getStorageAccounts('v2');
       const storageAccountKey = new anchor.web3.PublicKey(getStorageAccounts[0]!.publicKey);
+      const initializeInventory: string[] = [];
       const profileAndCharacterData: CharacterAndProfileData = {
         gumProfileDomain: gumDomainName,
         characters: [
@@ -42,6 +43,7 @@ export const useShadowDrive = () => {
             characterAge,
           },
         ],
+        inventory: initializeInventory,
       };
 
       const gameData = JSON.stringify(profileAndCharacterData);
