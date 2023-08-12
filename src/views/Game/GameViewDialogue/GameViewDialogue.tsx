@@ -5,7 +5,7 @@ import { DialogueTreeViewModel } from '~/viewmodels/DialogueTree/DialogueTreeVie
 import { nanoid } from 'nanoid';
 import { useViewModel } from '../../../../reactReactive/viewmodels/useViewModel';
 
-export const GameViewDialogue = observer(({ id, text, options }: DialogueTree) => {
+export const GameViewDialogue = observer(({ text, options }: DialogueTree) => {
   const dialogueVM = useViewModel<DialogueTreeViewModel>(DialogueTreeViewModel);
   const handleOptionClick = (index: number) => {
     const nextNode = dialogueVM.graph.selectOption(dialogueVM.activeNode?.id || '', index);

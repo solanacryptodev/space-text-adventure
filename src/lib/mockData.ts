@@ -1,4 +1,4 @@
-import { DialogueTree, TextCardProps, WorldImageCardProps } from '~/lib/types/globalTypes';
+import { TextCardProps, WorldImageCardProps } from '~/lib/types/globalTypes';
 
 export const demoPreviewCards: WorldImageCardProps[] = [
   {
@@ -48,55 +48,5 @@ export const demoTextCards: TextCardProps[] = [
   {
     cardHeader: 'Begin Your Journey',
     cardBodyText: 'Create a character and join the game',
-  },
-];
-
-export const demoGameDialogue: DialogueTree[] = [
-  {
-    id: 0,
-    text: 'Welcome to the Game!',
-    options: [
-      {
-        id: 0.1,
-        text: 'Option 1',
-      },
-      {
-        id: 0.2,
-        text: 'Option 2',
-      },
-      {
-        id: 0.3,
-        text: 'Option 3',
-      },
-      {
-        id: 0.4,
-        text: 'Option 4',
-      },
-    ],
-  },
-];
-
-export const demoGameDialogueTwo: DialogueTree[] = [
-  {
-    id: 1,
-    text: 'Welcome to the Game!',
-    options: [
-      {
-        id: 1.1,
-        text: 'Option 1',
-      },
-      {
-        id: 1.2,
-        text: 'Option 2',
-      },
-      {
-        id: 1.3,
-        text: 'Option 3',
-      },
-      {
-        id: 1.4,
-        text: 'Option 4',
-      },
-    ],
   },
 ];

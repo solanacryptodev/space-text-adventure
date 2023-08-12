@@ -105,7 +105,7 @@ export class DialogueTreeViewModel extends StandardViewModel {
     this.graph.addNode(this.nodeOne);
     this.graph.addNode(this.nodeTwo);
 
-    const nextNode = this.graph.selectOption('1', 0);
+    // const nextNode = this.graph.selectOption('1', 0);
     if (!this.graph.initialized) {
       this.setActiveNode(this.graph.nodes.get('1')!);
     }
