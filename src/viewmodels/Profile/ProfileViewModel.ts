@@ -16,8 +16,8 @@ export class ProfileViewModel extends StandardViewModel {
   domainName: string;
   profileName: string;
 
-  storageName: string;
-  storageSize: string;
+  storageKey: string;
+  storageUrl: string;
   version: ShadowDriveVersion;
   wallet: SessionWalletInterface | undefined | Uint8Array;
 
@@ -32,8 +32,8 @@ export class ProfileViewModel extends StandardViewModel {
     this.profileName = '';
     this.profilePicture = '';
 
-    this.storageName = '';
-    this.storageSize = '';
+    this.storageKey = '';
+    this.storageUrl = '';
     this.version = 'v2';
     this.wallet = undefined;
 
@@ -48,8 +48,8 @@ export class ProfileViewModel extends StandardViewModel {
       profileName: observable,
       musicPlaying: observable,
       music: observable,
-      storageName: observable,
-      storageSize: observable,
+      storageKey: observable,
+      storageUrl: observable,
       wallet: observable,
       verified: observable,
 
@@ -64,8 +64,8 @@ export class ProfileViewModel extends StandardViewModel {
       toggleMusic: action.bound,
       verifyDomainName: action.bound,
 
-      setStorageName: action.bound,
-      setStorageSize: action.bound,
+      setStorageKey: action.bound,
+      setStorageUrl: action.bound,
       setWallet: action.bound,
 
       getMusic: computed,
@@ -92,12 +92,12 @@ export class ProfileViewModel extends StandardViewModel {
     return this.music;
   }
 
-  setStorageName(storageName: string): void {
-    this.storageName = storageName;
+  setStorageKey(storageKey: string): void {
+    this.storageKey = storageKey;
   }
 
-  setStorageSize(storageSize: string): void {
-    this.storageSize = storageSize;
+  setStorageUrl(storageSize: string): void {
+    this.storageUrl = storageSize;
   }
 
   setWallet(wallet: Uint8Array | undefined): void {

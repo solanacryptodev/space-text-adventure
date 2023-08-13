@@ -16,7 +16,6 @@ export class DialogueTreeViewModel extends StandardViewModel {
   nodeOne: DialogueNode;
   nodeTwo: DialogueNode;
   activeNode: DialogueNode;
-  node: DialogueNode;
 
   constructor() {
     super();
@@ -26,14 +25,12 @@ export class DialogueTreeViewModel extends StandardViewModel {
     this.nodeOne = new DialogueNode();
     this.nodeTwo = new DialogueNode();
     this.activeNode = new DialogueNode();
-    this.node = new DialogueNode();
 
     makeObservable(this, {
       graph: observable,
       nodeOne: observable,
       nodeTwo: observable,
       activeNode: observable,
-      node: observable,
       fade: observable,
 
       initializeGraph: action.bound,
@@ -70,40 +67,21 @@ export class DialogueTreeViewModel extends StandardViewModel {
     this.fade = !fade;
   }
 
-  initializeGraph(): void {
-    // parse SHDW JSON url
-    // this.populateGraphFromJSON(shdwUrl);
-    this.nodeOne._id = '1';
-    this.nodeOne.content =
-      'So, I heard you are looking for something...the question is, what are you willing to pay for the fabled Compression Tool?';
-    this.nodeOne.addOption({
-      text: 'Why do you think I am here?',
-      targetNodeId: '2',
-    } as DialogueOptions);
-    this.nodeOne.addOption({
-      text: 'What is this supposed to be some kind of game?',
-      targetNodeId: '3',
-    } as DialogueOptions);
-    this.nodeOne.addOption({
-      text: 'Just give me the Compression Tool',
-      targetNodeId: '4',
-    } as DialogueOptions);
-    this.nodeOne.addOption({
-      text: 'Sorry, I am from out of town...',
-      targetNodeId: '5',
-    } as DialogueOptions);
+  async initializeGraph(): Promise<void> {
+    try {
+      const jsonData = await fetch(
+        `${process.env.NEXT_PUBLIC_WORLD_STORAGE_SHDW}/${process.env.NEXT_PUBLIC_OPOS_GAME_DATA}`
+      );
 
-    this.nodeTwo._id = '2';
-    this.nodeTwo.content = `You are a funny one ${this.profileVM.domainName}. Confused yet? Good! You should be. State compression 
-    is a complex topic, but once you find the 4 Keys of State Compression, you will be able to compress your NFTs and save 
-    your planet from high fees.`;
-    this.nodeTwo.addOption({
-      text: 'Find the Merkel Core',
-      targetNodeId: '1',
-    } as DialogueOptions);
+      if (!jsonData.ok) {
+        throw new Error(`Fetch error: ${jsonData.statusText}`);
+      }
 
-    this.graph.addNode(this.nodeOne);
-    this.graph.addNode(this.nodeTwo);
+      const jsonGameData = await jsonData.json();
+      this.populateGraphFromJSON(jsonGameData);
+    } catch (error) {
+      console.error('Error fetching game data:', error);
+    }
 
     // const nextNode = this.graph.selectOption('1', 0);
     if (!this.graph.initialized) {
@@ -113,17 +91,19 @@ export class DialogueTreeViewModel extends StandardViewModel {
 
   populateGraphFromJSON(jsonData: DialogueData) {
     for (const dialogue of jsonData) {
-      this.node._id = dialogue.id;
-      this.node.content = dialogue.content;
+      const newNode = new DialogueNode();
+
+      newNode._id = dialogue.id;
+      newNode.content = dialogue.content;
 
       for (const option of dialogue.options) {
-        this.node.addOption({
+        newNode.addOption({
           text: option.text,
           targetNodeId: option.targetNodeId,
         } as DialogueOptions);
       }
 
-      this.graph.addNode(this.node);
+      this.graph.addNode(newNode);
     }
   }
 
