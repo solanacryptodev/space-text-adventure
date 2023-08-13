@@ -5,11 +5,37 @@ import { GameViewDialogue } from '~/views/Game/GameViewDialogue/GameViewDialogue
 import { DialogueTreeViewModel } from '~/viewmodels/DialogueTree/DialogueTreeViewModel';
 import { nanoid } from 'nanoid';
 import { PlayButton } from '~/components/common/buttons/PlayButton';
+import { useShadowDrive } from '~/hooks/useShadowDrive';
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import { demoDialogueOptions } from '~/lib/mockData';
 import { useViewModel } from '../../../reactReactive/viewmodels/useViewModel';
 
 export const GameView = observer(() => {
   const dialogueVM = useViewModel<DialogueTreeViewModel>(DialogueTreeViewModel);
   const profileVM = useViewModel<ProfileViewModel>(ProfileViewModel);
+  const { editInventoryShdwFile } = useShadowDrive();
+  const { connection } = useConnection();
+  const wallet = useWallet();
+  // const {  } = useAnchorWallet();
+
+  const handlePlayerData = async () => {
+    // const characterFile = await getFilesFromStorage(
+    //   connection,
+    //   wallet,
+    //   `opos_game_dialogue_data.json`
+    // );
+    // console.log('characterFile: ', profileVM.storageUrl);
+
+    // const uploadGameFile = await uploadGameData(connection, wallet, demoDialogueOptions);
+
+    await editInventoryShdwFile(
+      connection,
+      wallet,
+      `https://shdw-drive.genesysgo.net/AWjnok2j7Nfa6BpFg34UhTQsAZ63g7ctSQpqi8MKTkME/opos_game_dialogue_data.json`,
+      demoDialogueOptions,
+      'v2'
+    );
+  };
 
   if (!dialogueVM.activeNode) return null;
 
@@ -48,6 +74,7 @@ export const GameView = observer(() => {
 
               <button
                 type="button"
+                onClick={handlePlayerData}
                 className="my-5 w-full flex items-center justify-center py-1.5 px-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
               >
                 <svg

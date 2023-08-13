@@ -1,4 +1,4 @@
-import { TextCardProps, WorldImageCardProps } from '~/lib/types/globalTypes';
+import { DialogueData, TextCardProps, WorldImageCardProps } from '~/lib/types/globalTypes';
 
 export const demoPreviewCards: WorldImageCardProps[] = [
   {
@@ -48,5 +48,56 @@ export const demoTextCards: TextCardProps[] = [
   {
     cardHeader: 'Begin Your Journey',
     cardBodyText: 'Create a character and join the game',
+  },
+];
+
+/* Index signature I never used */
+export interface OposGameData {
+  [key: string]: {
+    [dataKey: string]: string;
+  };
+}
+
+export const demoDialogueOptions: DialogueData = [
+  {
+    id: '1',
+    content:
+      'So, I heard you are looking for something...the question is, what are you willing to pay for the fabled ' +
+      'Compression Tool?',
+    options: [
+      {
+        text: 'Why do you think I am here?',
+        targetNodeId: '2',
+      },
+      {
+        text: 'What is this supposed to be some kind of game?',
+        targetNodeId: '2',
+      },
+      {
+        text: 'Just give me the Compression Tool',
+        targetNodeId: '2',
+      },
+      {
+        text: 'Sorry, I am from out of town...',
+        targetNodeId: '2',
+      },
+    ],
+  },
+  {
+    id: '2',
+    content:
+      'You are a funny one. Confused yet? Good! You should be. State compression ' +
+      'is a complex topic, but once you find the 4 Keys of State Compression, you will be able to compress your NFTs ' +
+      'and save your planet from high fees.',
+    options: [
+      {
+        text: 'Find the Merkel Core',
+        targetNodeId: '1',
+      },
+      {
+        text: 'Find the Solana Scepter',
+        targetNodeId: '1',
+      },
+    ],
   },
 ];

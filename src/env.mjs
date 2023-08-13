@@ -33,6 +33,7 @@ export const env = createEnv({
     NEXT_PUBLIC_SOLANA_MAINNET_ENDPOINT: z.string().url(),
     NEXT_PUBLIC_WORLD_STORAGE_SHDW: z.string(),
     NEXT_PUBLIC_SITE_THEME: z.string(),
+    NEXT_PUBLIC_OPOS_GAME_DATA: z.string(),
     // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
   },
 
@@ -49,6 +50,7 @@ export const env = createEnv({
     NEXT_PUBLIC_SOLANA_MAINNET_ENDPOINT: process.env.NEXT_PUBLIC_SOLANA_MAINNET_ENDPOINT,
     NEXT_PUBLIC_WORLD_STORAGE_SHDW: process.env.NEXT_PUBLIC_WORLD_STORAGE_SHDW,
     NEXT_PUBLIC_SITE_THEME: process.env.NEXT_PUBLIC_SITE_THEME,
+    NEXT_PUBLIC_OPOS_GAME_DATA: process.env.NEXT_PUBLIC_OPOS_GAME_DATA,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

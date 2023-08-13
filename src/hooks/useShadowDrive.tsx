@@ -1,11 +1,15 @@
 import { ShdwDrive, ShadowDriveVersion } from '@shadow-drive/sdk';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { AnchorWallet } from '@solana/wallet-adapter-react';
-import { CharacterAndProfileData } from '~/lib/types/globalTypes';
+import { CharacterAndProfileData, DialogueData } from '~/lib/types/globalTypes';
 import { Buffer } from 'buffer';
 import * as anchor from '@project-serum/anchor';
+import { ProfileViewModel } from '~/viewmodels/Profile/ProfileViewModel';
+import { useViewModel } from '../../reactReactive/viewmodels/useViewModel';
 
 export const useShadowDrive = () => {
+  const profileVM = useViewModel<ProfileViewModel>(ProfileViewModel);
+
   const createStorageAccount = async (
     name: string,
     size: string,
@@ -59,6 +63,28 @@ export const useShadowDrive = () => {
     }
   };
 
+  const uploadGameData = async (
+    connection: Connection,
+    wallet: any,
+    gameData: DialogueData
+  ): Promise<void> => {
+    try {
+      const shdwDrive = await new ShdwDrive(connection, wallet).init();
+      const getStorageAccounts = await shdwDrive.getStorageAccounts('v2');
+      const storageAccountKey = new anchor.web3.PublicKey(getStorageAccounts[0]!.publicKey);
+
+      const rawGameData = JSON.stringify(gameData);
+      const blob = new Blob([Buffer.from(rawGameData)], { type: 'application/json' });
+      const myFile = new File([blob], 'opos_game_dialogue_data.json', {
+        type: 'application/json',
+      });
+
+      await shdwDrive.uploadFile(storageAccountKey, myFile);
+    } catch (error) {
+      console.log('upload game data error: ', error);
+    }
+  };
+
   /*
    * - Filename is the name of the document stored on the storage account
    * */
@@ -75,13 +101,15 @@ export const useShadowDrive = () => {
       const storageAccount = getStorageAccounts.at(0)!.publicKey;
       const storageAcct = await shdwDrive.getStorageAccount(storageAccount);
       const storageAcctKey = storageAcct.storage_account;
+
+      profileVM.setStorageKey(storageAcctKey.toString()); // store storage key in state
+
       const storageFiles = await shdwDrive.listObjects(new PublicKey(storageAcctKey));
-      console.log('stored objects: ', storageFiles.keys);
 
       if (storageFiles.keys.includes(fileName)) {
-        // TODO: create a StorageModel to store a users shdw acct data
         files.push(fileName);
-        await buildShadowUrl(String(storageAcctKey), fileName);
+        const url = await buildShadowUrl(String(storageAcctKey), fileName);
+        profileVM.setStorageUrl(url); // store storage url in state
       } else {
         console.log(`${fileName} file not found`);
       }
@@ -95,16 +123,36 @@ export const useShadowDrive = () => {
     return `https://shdw-drive.genesysgo.net/${storageAccountKey}/${fileName}`;
   };
 
-  // const editInventoryShdwFile = async (connection: Connection, wallet: any): Promise<void> => {
-  //   try {
-  //     const shdwDrive = await new ShdwDrive(connection, wallet).init();
-  //     const getStorageAccounts = await shdwDrive.getStorageAccounts('v2');
-  //     const storageAccountKey = new anchor.web3.PublicKey(getStorageAccounts[0]!.publicKey);
-  //     await shdwDrive.editFile(storageAccountKey, '', );
-  //   } catch (error) {
-  //     console.log('error editing files: ', error);
-  //   }
-  // };
+  const editInventoryShdwFile = async (
+    connection: Connection,
+    wallet: any,
+    url: string,
+    data: any, // data type
+    version: ShadowDriveVersion
+  ): Promise<void> => {
+    try {
+      const shdwDrive = await new ShdwDrive(connection, wallet).init();
+      const getStorageAccounts = await shdwDrive.getStorageAccounts('v2');
+      const storageAccountKey = new anchor.web3.PublicKey(getStorageAccounts[0]!.publicKey);
 
-  return { createStorageAccount, uploadCharacterFiles, getFilesFromStorage, buildShadowUrl };
+      const rawGameData = JSON.stringify(data);
+      const blob = new Blob([Buffer.from(rawGameData)], { type: 'application/json' });
+      const myFile = new File([blob], 'opos_game_dialogue_data.json', {
+        type: 'application/json',
+      });
+
+      await shdwDrive.editFile(storageAccountKey, url, myFile, version);
+    } catch (error) {
+      console.log('error editing files: ', error);
+    }
+  };
+
+  return {
+    createStorageAccount,
+    uploadCharacterFiles,
+    uploadGameData,
+    getFilesFromStorage,
+    buildShadowUrl,
+    editInventoryShdwFile,
+  };
 };
