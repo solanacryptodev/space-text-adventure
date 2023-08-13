@@ -79,7 +79,7 @@ export const useShadowDrive = () => {
         type: 'application/json',
       });
 
-      const uploadFile = await shdwDrive.uploadFile(storageAccountKey, myFile);
+      await shdwDrive.uploadFile(storageAccountKey, myFile);
     } catch (error) {
       console.log('upload game data error: ', error);
     }
