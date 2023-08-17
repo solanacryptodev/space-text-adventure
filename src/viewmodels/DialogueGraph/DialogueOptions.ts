@@ -1,5 +1,6 @@
 import { makeObservable, observable } from 'mobx';
 import { singleton } from 'tsyringe';
+import { Effects } from '~/lib/types/gameEffects';
 import { StandardViewModel } from '../../../reactReactive/viewmodels/StandardViewModel';
 
 /*
@@ -9,15 +10,18 @@ import { StandardViewModel } from '../../../reactReactive/viewmodels/StandardVie
 export class DialogueOptions extends StandardViewModel {
   text: string;
   targetNodeId: string;
+  effects: Effects;
 
   constructor() {
     super();
     this.text = '';
     this.targetNodeId = '';
+    this.effects = {};
 
     makeObservable(this, {
       text: observable,
       targetNodeId: observable,
+      effects: observable,
     });
   }
 

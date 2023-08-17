@@ -1,20 +1,16 @@
 import { action, makeObservable, observable } from 'mobx';
 import { singleton } from 'tsyringe';
 import { DialogueData } from '~/lib/types/globalTypes';
-import { DialogueGraph } from '~/viewmodels/DialogueTree/DialogueGraph';
-import { DialogueNode } from '~/viewmodels/DialogueTree/DialogueNode';
-import { DialogueOptions } from '~/viewmodels/DialogueTree/DialogueOptions';
-import { ProfileViewModel } from '~/viewmodels/Profile/ProfileViewModel';
+import { DialogueGraph } from '~/viewmodels/DialogueGraph/DialogueGraph';
+import { DialogueNode } from '~/viewmodels/DialogueGraph/DialogueNode';
+import { DialogueOptions } from '~/viewmodels/DialogueGraph/DialogueOptions';
 import { StandardViewModel } from '../../../reactReactive/viewmodels/StandardViewModel';
 
 @singleton()
-export class DialogueTreeViewModel extends StandardViewModel {
-  protected profileVM = this.addDependency(ProfileViewModel);
+export class DialogueGraphViewModel extends StandardViewModel {
   fade: boolean;
 
   graph: DialogueGraph;
-  nodeOne: DialogueNode;
-  nodeTwo: DialogueNode;
   activeNode: DialogueNode;
 
   constructor() {
@@ -22,14 +18,10 @@ export class DialogueTreeViewModel extends StandardViewModel {
     this.fade = false;
 
     this.graph = new DialogueGraph();
-    this.nodeOne = new DialogueNode();
-    this.nodeTwo = new DialogueNode();
     this.activeNode = new DialogueNode();
 
     makeObservable(this, {
       graph: observable,
-      nodeOne: observable,
-      nodeTwo: observable,
       activeNode: observable,
       fade: observable,
 
@@ -58,7 +50,11 @@ export class DialogueTreeViewModel extends StandardViewModel {
   // }
 
   setActiveNode(node: DialogueNode): void {
-    node!.options = this.removeExtraOption(node!.options!);
+    if (!node || !node.options) {
+      return;
+    }
+    node.options = this.removeExtraOption(node.options);
+
     this.graph.initialized = true;
     this.activeNode = node;
   }
@@ -89,7 +85,7 @@ export class DialogueTreeViewModel extends StandardViewModel {
     }
   }
 
-  populateGraphFromJSON(jsonData: DialogueData) {
+  populateGraphFromJSON(jsonData: DialogueData): void {
     for (const dialogue of jsonData) {
       const newNode = new DialogueNode();
 
@@ -100,6 +96,7 @@ export class DialogueTreeViewModel extends StandardViewModel {
         newNode.addOption({
           text: option.text,
           targetNodeId: option.targetNodeId,
+          effects: option.effects,
         } as DialogueOptions);
       }
 

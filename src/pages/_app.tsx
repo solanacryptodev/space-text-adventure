@@ -26,10 +26,7 @@ const TextGameApp: AppType<{ session: Session | null }> = ({
 }) => {
   const network = WalletAdapterNetwork.Mainnet;
   const endpoint = process.env.NEXT_PUBLIC_SOLANA_MAINNET_ENDPOINT ?? clusterApiUrl(network);
-  const wallets = useMemo(
-    () => [new PhantomWalletAdapter(), new SolflareWalletAdapter(), new BackpackWalletAdapter()],
-    [network]
-  );
+  const wallets = useMemo(() => [new SolflareWalletAdapter()], [network]);
   return (
     <UseWalletContextProvider wallets={wallets} network={network} endpoint={endpoint}>
       <UseGumSDKProvider>

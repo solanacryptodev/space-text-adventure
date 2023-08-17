@@ -1,7 +1,7 @@
 import { StandardViewModel } from 'reactReactive/viewmodels/StandardViewModel';
 import { makeObservable, observable, action } from 'mobx';
 import { singleton } from 'tsyringe';
-import { DialogueOptions } from '~/viewmodels/DialogueTree/DialogueOptions';
+import { DialogueOptions } from '~/viewmodels/DialogueGraph/DialogueOptions';
 
 /*
  * DialogueNode represents a single piece of dialogue.

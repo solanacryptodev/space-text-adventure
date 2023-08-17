@@ -1,6 +1,7 @@
 import { singleton } from 'tsyringe';
 import { makeObservable, observable, action } from 'mobx';
-import { DialogueNode } from '~/viewmodels/DialogueTree/DialogueNode';
+import { DialogueNode } from '~/viewmodels/DialogueGraph/DialogueNode';
+import router from 'next/router';
 import { StandardViewModel } from '../../../reactReactive/viewmodels/StandardViewModel';
 
 /*
@@ -22,6 +23,8 @@ export class DialogueGraph extends StandardViewModel {
 
       addNode: action.bound,
       selectOption: action.bound,
+      handleHomeEffect: action.bound,
+      handleMintEffect: action.bound,
     });
   }
 
@@ -40,8 +43,29 @@ export class DialogueGraph extends StandardViewModel {
   selectOption(nodeId: string, optionIndex: number): DialogueNode | null {
     const node = this.nodes.get(nodeId);
     if (node && node.options[optionIndex]) {
-      return this.nodes.get(node.options[optionIndex]!.targetNodeId)!;
+      const selectedOption = node.options[optionIndex]!;
+
+      // Check effects and handle them
+      if (selectedOption.effects?.returnHome) {
+        this.handleHomeEffect();
+      }
+      if (selectedOption.effects?.mintNFT) {
+        this.handleMintEffect();
+      }
+
+      return this.nodes.get(selectedOption.targetNodeId)!;
     }
     return null;
+  }
+
+  handleHomeEffect() {
+    router.push({
+      pathname: '/',
+    });
+  }
+
+  handleMintEffect() {
+    console.log('minting');
+    // TODO: mint NFT
   }
 }
