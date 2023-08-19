@@ -195,6 +195,10 @@ export const demoDialogueOptions: DialogueData = [
           mintNFT: true,
         },
       },
+      {
+        text: 'Return to town leader',
+        targetNodeId: '1',
+      },
     ],
   },
   {
@@ -253,6 +257,10 @@ export const demoDialogueOptions: DialogueData = [
         effects: {
           mintNFT: true,
         },
+      },
+      {
+        text: 'Return to town leader',
+        targetNodeId: '1',
       },
     ],
   },

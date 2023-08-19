@@ -1,4 +1,4 @@
-import { action, makeObservable, observable } from 'mobx';
+import { action, autorun, computed, makeObservable, observable } from 'mobx';
 import { singleton } from 'tsyringe';
 import { DialogueData } from '~/lib/types/globalTypes';
 import { DialogueGraph } from '~/viewmodels/DialogueGraph/DialogueGraph';
@@ -13,6 +13,8 @@ export class DialogueGraphViewModel extends StandardViewModel {
   graph: DialogueGraph;
   activeNode: DialogueNode;
 
+  tipAmount: string;
+
   constructor() {
     super();
     this.fade = false;
@@ -20,15 +22,22 @@ export class DialogueGraphViewModel extends StandardViewModel {
     this.graph = new DialogueGraph();
     this.activeNode = new DialogueNode();
 
+    this.tipAmount = '';
+
     makeObservable(this, {
       graph: observable,
       activeNode: observable,
       fade: observable,
+      tipAmount: observable,
 
       initializeGraph: action.bound,
       setActiveNode: action.bound,
       setFade: action.bound,
       populateGraphFromJSON: action.bound,
+      setTipAmount: action.bound,
+
+      getMintEffect: computed,
+      getApprovalKey: computed,
     });
   }
 
@@ -42,12 +51,23 @@ export class DialogueGraphViewModel extends StandardViewModel {
   // protected createReactions(): void {
   //   this.addReaction(
   //     autorun(() => {
-  //       if (!this.graph.initialized) {
-  //         this.setActiveNode(this.graph.nodes.get('1')!);
+  //       if (this.key.length < 1) {
+  //         this.getKey();
   //       }
   //     })
   //   );
   // }
+  get getMintEffect(): boolean {
+    return this.graph.activateMintEffect;
+  }
+
+  get getApprovalKey(): number[] {
+    return this.graph.approvalKey;
+  }
+
+  setTipAmount(tip: string) {
+    this.tipAmount = tip;
+  }
 
   setActiveNode(node: DialogueNode): void {
     if (!node || !node.options) {

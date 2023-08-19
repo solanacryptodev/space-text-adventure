@@ -1,5 +1,5 @@
 import { singleton } from 'tsyringe';
-import { makeObservable, observable, action } from 'mobx';
+import { makeObservable, observable, action, computed } from 'mobx';
 import { DialogueNode } from '~/viewmodels/DialogueGraph/DialogueNode';
 import router from 'next/router';
 import { Effects } from '~/lib/types/gameEffects';
@@ -12,15 +12,21 @@ import { StandardViewModel } from '../../../reactReactive/viewmodels/StandardVie
 export class DialogueGraph extends StandardViewModel {
   nodes: Map<string, DialogueNode>;
   initialized: boolean;
+  activateMintEffect: boolean;
+  approvalKey: number[];
 
   constructor() {
     super();
     this.nodes = new Map();
     this.initialized = false;
+    this.activateMintEffect = false;
+    this.approvalKey = [];
 
     makeObservable(this, {
       nodes: observable,
       initialized: observable,
+      activateMintEffect: observable,
+      approvalKey: observable,
 
       addNode: action.bound,
       selectOption: action.bound,
@@ -46,8 +52,9 @@ export class DialogueGraph extends StandardViewModel {
     if (node && node.options[optionIndex]) {
       const selectedOption = node.options[optionIndex]!;
 
-      // Check effects and handle them
-      this.triggerEffect(selectedOption.effects);
+      if (selectedOption.effects) {
+        this.triggerEffect(selectedOption.effects);
+      }
 
       return this.nodes.get(selectedOption.targetNodeId)!;
     }
@@ -69,7 +76,6 @@ export class DialogueGraph extends StandardViewModel {
   }
 
   handleMintEffect(): void {
-    console.log('minting');
-    // TODO: mint NFT
+    this.activateMintEffect = true;
   }
 }
