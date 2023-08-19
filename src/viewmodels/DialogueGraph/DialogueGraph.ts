@@ -2,6 +2,7 @@ import { singleton } from 'tsyringe';
 import { makeObservable, observable, action } from 'mobx';
 import { DialogueNode } from '~/viewmodels/DialogueGraph/DialogueNode';
 import router from 'next/router';
+import { Effects } from '~/lib/types/gameEffects';
 import { StandardViewModel } from '../../../reactReactive/viewmodels/StandardViewModel';
 
 /*
@@ -46,25 +47,28 @@ export class DialogueGraph extends StandardViewModel {
       const selectedOption = node.options[optionIndex]!;
 
       // Check effects and handle them
-      if (selectedOption.effects?.returnHome) {
-        this.handleHomeEffect();
-      }
-      if (selectedOption.effects?.mintNFT) {
-        this.handleMintEffect();
-      }
+      this.triggerEffect(selectedOption.effects);
 
       return this.nodes.get(selectedOption.targetNodeId)!;
     }
     return null;
   }
 
-  handleHomeEffect() {
+  triggerEffect(effect: Effects): void {
+    if (effect.returnHome) {
+      this.handleHomeEffect();
+    } else if (effect.mintNFT) {
+      this.handleMintEffect();
+    }
+  }
+
+  handleHomeEffect(): void {
     router.push({
       pathname: '/',
     });
   }
 
-  handleMintEffect() {
+  handleMintEffect(): void {
     console.log('minting');
     // TODO: mint NFT
   }
