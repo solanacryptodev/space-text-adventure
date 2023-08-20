@@ -1,43 +1,28 @@
 import { observer } from 'mobx-react-lite';
-// import { Transition } from '@tailwindui/react';
 import { ProfileViewModel } from '~/viewmodels/Profile/ProfileViewModel';
 import { GameViewDialogue } from '~/views/Game/GameViewDialogue/GameViewDialogue';
-import { DialogueTreeViewModel } from '~/viewmodels/DialogueTree/DialogueTreeViewModel';
+import { DialogueGraphViewModel } from '~/viewmodels/DialogueGraph/DialogueGraphViewModel';
 import { nanoid } from 'nanoid';
 import { PlayButton } from '~/components/common/buttons/PlayButton';
-import { useShadowDrive } from '~/hooks/useShadowDrive';
-import { useConnection, useWallet } from '@solana/wallet-adapter-react';
-import { demoDialogueOptions } from '~/lib/mockData';
+import { TipJar } from '~/components/common/forms/TipJar';
+import { CompressionViewModel } from '~/viewmodels/Compression/CompressionViewModel';
+import { useRouter } from 'next/router';
 import { useViewModel } from '../../../reactReactive/viewmodels/useViewModel';
 
 export const GameView = observer(() => {
-  const dialogueVM = useViewModel<DialogueTreeViewModel>(DialogueTreeViewModel);
+  const dialogueVM = useViewModel<DialogueGraphViewModel>(DialogueGraphViewModel);
+  const compressionVM = useViewModel<CompressionViewModel>(CompressionViewModel);
   const profileVM = useViewModel<ProfileViewModel>(ProfileViewModel);
-  const { editInventoryShdwFile } = useShadowDrive();
-  const { connection } = useConnection();
-  const wallet = useWallet();
-  // const {  } = useAnchorWallet();
+  const router = useRouter();
 
   const handlePlayerData = async () => {
-    // const characterFile = await getFilesFromStorage(
-    //   connection,
-    //   wallet,
-    //   `opos_game_dialogue_data.json`
-    // );
-    // console.log('characterFile: ', profileVM.storageUrl);
-
-    // const uploadGameFile = await uploadGameData(connection, wallet, demoDialogueOptions);
-
-    await editInventoryShdwFile(
-      connection,
-      wallet,
-      `https://shdw-drive.genesysgo.net/AWjnok2j7Nfa6BpFg34UhTQsAZ63g7ctSQpqi8MKTkME/opos_game_dialogue_data.json`,
-      demoDialogueOptions,
-      'v2'
-    );
+    router.push({
+      pathname: '/',
+    });
   };
 
   if (!dialogueVM.activeNode) return null;
+  const url = `https://explorer.solana.com/tx/${compressionVM.txID}`;
 
   return (
     <div className="antialiased bg-gradient-to-b from-[#151B25] to-[#000000] dark:bg-gray-900">
@@ -51,6 +36,16 @@ export const GameView = observer(() => {
               options={dialogueVM.activeNode.options}
             />
           )}
+          <div className="items-center justify-center">
+            {compressionVM.txID.length > 1 && (
+              <div className="p-2 bg-[#90EE90] border-b-green-600 text-black text-center">
+                <div className="font-bold">cNFT Transaction ID: </div>
+                <a className="underline" href={url} target="_blank" rel="noopener noreferrer">
+                  {compressionVM.txID}
+                </a>
+              </div>
+            )}
+          </div>
         </main>
 
         <aside
@@ -93,6 +88,18 @@ export const GameView = observer(() => {
                 </svg>
                 Logout
               </button>
+
+              <div className="pb-1.5">
+                <p className="text-red-600">
+                  Demo Note: Please use Solflare wallet for testing cNFT minting. All other wallets
+                  fail to simulate the instruction transaction. Known issue.
+                </p>
+              </div>
+
+              <div className="pb-1">
+                <p className="text-white pb-1">Leave a tip if you so desire, thank you.</p>
+                <TipJar />
+              </div>
 
               <PlayButton />
             </div>

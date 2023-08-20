@@ -96,10 +96,10 @@ export const useCompressionMachine = () => {
     );
 
     const depthSizePair: ValidDepthSizePair = {
-      maxDepth: 14,
-      maxBufferSize: 256,
+      maxDepth: 16,
+      maxBufferSize: 64,
     };
-    const canopyDepth = 10; // 14 - 10 = a proof of 4
+    const canopyDepth = 8; // 16 - 8 = a proof of 8
     const space = getConcurrentMerkleTreeAccountSize(
       depthSizePair.maxDepth,
       depthSizePair.maxBufferSize,
@@ -131,21 +131,25 @@ export const useCompressionMachine = () => {
       }
     );
 
-    const tx = new Transaction().add(createAccountIx).add(createTreeIx);
-    tx!.feePayer = wallet!.publicKey!;
+    try {
+      const tx = new Transaction().add(createAccountIx).add(createTreeIx);
+      tx!.feePayer = wallet!.publicKey!;
 
-    const latestBlockhash = await connection.getLatestBlockhash();
-    tx.recentBlockhash = latestBlockhash.blockhash;
+      const latestBlockhash = await connection.getLatestBlockhash();
+      tx.recentBlockhash = latestBlockhash.blockhash;
 
-    // Partially sign the transaction with the merkleTree and then with the user's wallet
-    tx!.partialSign(merkleTree);
-    await wallet!.signTransaction(tx);
+      // Partially sign the transaction with the merkleTree and then with the user's wallet
+      tx!.partialSign(merkleTree);
+      await wallet!.signTransaction(tx);
 
-    // Serialize and send the transaction
-    const signedTx = tx!.serialize();
-    const txId = await connection.sendRawTransaction(signedTx);
+      // Serialize and send the transaction
+      const signedTx = tx!.serialize();
+      const txId = await connection.sendRawTransaction(signedTx);
 
-    console.log('Transaction ID:', txId);
+      console.log('Transaction ID:', txId);
+    } catch (error) {
+      console.log('error creating merkle tree', error);
+    }
   };
 
   const createCollection = async (connection: Connection, wallet: AnchorWallet) => {
@@ -159,7 +163,6 @@ export const useCompressionMachine = () => {
     const requiredBalance = await getMinimumBalanceForRentExemptMint(connection);
     // metadata account associated with mint
     const metadataPDA = metaplex!.nfts()!.pdas()!.metadata({ mint: mintKey.publicKey })!;
-    const masterEditionPDA = metaplex.nfts().pdas().masterEdition({ mint: mintKey.publicKey });
     // get associated token account of your wallet
     const tokenATA = await getAssociatedTokenAddress(mintKey.publicKey, wallet.publicKey);
 
@@ -201,8 +204,8 @@ export const useCompressionMachine = () => {
         {
           createMetadataAccountArgsV3: {
             data: {
-              name: 'The Armors of Solo',
-              symbol: 'SCO',
+              name: 'The Armor of Compression',
+              symbol: 'ACOM',
               uri: 'https://shdw-drive.genesysgo.net/AWjnok2j7Nfa6BpFg34UhTQsAZ63g7ctSQpqi8MKTkME/armor_of_compression.json',
               sellerFeeBasisPoints: 0,
               creators: null,
@@ -265,10 +268,9 @@ export const useCompressionMachine = () => {
   };
 
   const mintCompressedNFT = async (connection: Connection, wallet: any) => {
-    const creator = new PublicKey('4ci45W2Yq2AE9rnBeeuwYSwQxDXo8M9LDJphS1Re7yKV');
-    const metaplex = Metaplex.make(connection).use(guestIdentity(creator));
-    const merkleTree = new PublicKey('GGRa4eqs26ahqw5mBaaCP4Y3Y9mWnvw6trrHD22LWvq');
-    const collectionMint = new PublicKey('2GmN7FcJfHTCNfuG6Pcp56Ha3cMmMD2m1RZusaC9hp9z'); // actual cNFT address
+    const creator = new PublicKey('ChS3sLSGg8h1hbF3ryyLY4hF5ucQNcMiqCJLQ8ztVqDv');
+    const merkleTree = new PublicKey('8hQh77KdmfYvSd8juA2Whr3KznmXZmFDmABje3oTJC3y');
+    const collectionMint = new PublicKey('6BKGAnacnaWY6Q1ifBH6BUFwEUiVr7ER7WgwzQfBNScw'); // actual cNFT address
     const collectionAuthority = Keypair.fromSecretKey(compressionVM.demoKey);
     const treeDelegate = Keypair.fromSecretKey(compressionVM.demoKey);
 
@@ -306,8 +308,8 @@ export const useCompressionMachine = () => {
         },
         {
           message: {
-            name: 'The Armor of Dolo',
-            symbol: 'CNFT',
+            name: 'The Armor of Compression',
+            symbol: 'ACOM',
             uri: 'https://shdw-drive.genesysgo.net/AWjnok2j7Nfa6BpFg34UhTQsAZ63g7ctSQpqi8MKTkME/armor_of_compression.json',
             sellerFeeBasisPoints: 0,
             primarySaleHappened: true,
