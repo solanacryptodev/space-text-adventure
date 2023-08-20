@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { Adapter, WalletAdapterNetwork } from '@solana/wallet-adapter-base';
-import { DialogueOptions } from '~/viewmodels/DialogueTree/DialogueOptions';
+import { DialogueOptions } from '~/viewmodels/DialogueGraph/DialogueOptions';
+import { Effects } from '~/lib/types/gameEffects';
 
 export interface WorldPreviewCardProps {
   worldName?: string;
@@ -33,6 +34,34 @@ export interface CharacterAndProfileData {
   inventory: string[];
 }
 
+export interface NFTMetadata {
+  description: string;
+  image: string;
+  external_url: string;
+  attributes: [
+    {
+      trait_type: string;
+      value: string;
+    },
+    {
+      trait_type: string;
+      value: string;
+    },
+    {
+      trait_type: string;
+      value: string;
+    },
+  ];
+  properties: {
+    files: [
+      {
+        uri: string;
+        type: string;
+      },
+    ];
+  };
+}
+
 export interface iDialogueOptions {
   id: string;
   text: string;
@@ -59,7 +88,8 @@ export interface WalletContextProvider {
 
 interface DialogueOptionData {
   text: string;
-  targetNodeId: string;
+  targetNodeId?: string;
+  effects?: Effects;
 }
 
 interface DialogueNodeData {

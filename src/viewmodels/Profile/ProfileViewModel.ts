@@ -6,11 +6,14 @@ import { Connection } from '@solana/web3.js';
 import { SessionWalletInterface } from '@gumhq/react-sdk';
 import { AnchorWallet } from '@solana/wallet-adapter-react';
 import router from 'next/router';
+import { CharacterCreationViewModel } from '~/viewmodels/CharacterCreation/CharacterCreationViewModel';
+import { CharacterAndProfileData } from '~/lib/types/globalTypes';
 import { StandardViewModel } from '../../../reactReactive/viewmodels/StandardViewModel';
 
 @singleton()
 export class ProfileViewModel extends StandardViewModel {
   protected profileModel = this.addDependency(ProfileModel);
+  protected characterVM = this.addDependency(CharacterCreationViewModel);
   publicKey: string | undefined;
   profilePicture: string | undefined;
   domainName: string;
@@ -58,6 +61,7 @@ export class ProfileViewModel extends StandardViewModel {
       submitProfileToModel: action.bound,
       setDomainName: action.bound,
       setProfileName: action.bound,
+      setCharacterDataFromJSON: action.bound,
       createStorageAccount: action.bound,
       setMusicPlaying: action.bound,
       addMusic: action.bound,
@@ -122,6 +126,17 @@ export class ProfileViewModel extends StandardViewModel {
 
   setMusicPlaying(playing: boolean): void {
     this.musicPlaying = playing;
+  }
+
+  setCharacterDataFromJSON(jsonData: CharacterAndProfileData): void {
+    try {
+      // TODO: handle multiple characters
+      const characterName = jsonData.characters.map((character) => character.characterName);
+      this.characterVM.characterName = characterName[0]!;
+      console.log('character name: ', this.characterVM.characterName);
+    } catch (error) {
+      console.log('error setting character data: ', error);
+    }
   }
 
   addMusic(musicTrack: string): string[] {

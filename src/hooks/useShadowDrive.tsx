@@ -123,6 +123,7 @@ export const useShadowDrive = () => {
     return `https://shdw-drive.genesysgo.net/${storageAccountKey}/${fileName}`;
   };
 
+  /* useAnchorWallet does not work when passed in, use useWallet instead */
   const editInventoryShdwFile = async (
     connection: Connection,
     wallet: any,

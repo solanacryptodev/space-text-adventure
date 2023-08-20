@@ -1,14 +1,25 @@
 import { observer } from 'mobx-react-lite';
 import { DialogueTree } from '~/lib/types/globalTypes';
 import { GameViewDialogueOptions } from '~/views/Game/GameViewDialogue/GameViewDialogueOptions';
-import { DialogueTreeViewModel } from '~/viewmodels/DialogueTree/DialogueTreeViewModel';
+import { DialogueGraphViewModel } from '~/viewmodels/DialogueGraph/DialogueGraphViewModel';
 import { nanoid } from 'nanoid';
+import { useCompressionMachine } from '~/hooks/useCompressionMachine';
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { useViewModel } from '../../../../reactReactive/viewmodels/useViewModel';
 
 export const GameViewDialogue = observer(({ text, options }: DialogueTree) => {
-  const dialogueVM = useViewModel<DialogueTreeViewModel>(DialogueTreeViewModel);
-  const handleOptionClick = (index: number) => {
+  const dialogueVM = useViewModel<DialogueGraphViewModel>(DialogueGraphViewModel);
+  const { mintCompressedNFT } = useCompressionMachine();
+  const wallet = useWallet();
+  const connection = useConnection();
+
+  const handleOptionClick = async (index: number) => {
     const nextNode = dialogueVM.graph.selectOption(dialogueVM.activeNode?.id || '', index);
+
+    if (dialogueVM.getMintEffect) {
+      await mintCompressedNFT(connection.connection, wallet!);
+    }
+
     dialogueVM.setActiveNode(nextNode!);
     dialogueVM.setFade(true);
   };
