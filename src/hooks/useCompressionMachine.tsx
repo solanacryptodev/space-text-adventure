@@ -90,6 +90,7 @@ export const useCompressionMachine = () => {
     compressionVM.merkleTreeAccount = merkleTree.publicKey.toString();
     console.log('merkle tree key', compressionVM.merkleTreeAccount);
 
+    // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
     const [treeAuthority, _bump] = PublicKey.findProgramAddressSync(
       [merkleTree.publicKey.toBuffer()],
       BUBBLEGUM_PROGRAM_ID
@@ -274,12 +275,14 @@ export const useCompressionMachine = () => {
     const collectionAuthority = Keypair.fromSecretKey(compressionVM.demoKey);
     const treeDelegate = Keypair.fromSecretKey(compressionVM.demoKey);
 
+    // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
     const [treeAuthority, _bump] = PublicKey.findProgramAddressSync(
       [merkleTree.toBuffer()],
       BUBBLEGUM_PROGRAM_ID
     );
     console.log('treeAuthority', treeAuthority.toString()!);
 
+    // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
     const [collectionEditionAccount, _b2] = PublicKey.findProgramAddressSync(
       [
         Buffer.from('metadata', 'utf8'),
@@ -290,10 +293,6 @@ export const useCompressionMachine = () => {
       TOKEN_METADATA_PROGRAM_ID
     );
     console.log('collectionEditionAccount', collectionEditionAccount!.toString()!);
-    const [bgumSigner, __] = PublicKey.findProgramAddressSync(
-      [Buffer.from('collection_cpi', 'utf8')],
-      BUBBLEGUM_PROGRAM_ID
-    );
     const mintCNFT = new Transaction().add(
       createMintV1Instruction(
         {

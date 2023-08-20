@@ -4,11 +4,7 @@ import { SessionProvider } from 'next-auth/react';
 import { AppType } from 'next/app';
 import { UseWalletContextProvider } from '~/hooks/useWalletContextProvider';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
-import {
-  PhantomWalletAdapter,
-  BackpackWalletAdapter,
-  SolflareWalletAdapter,
-} from '@solana/wallet-adapter-wallets';
+import { SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
 import { clusterApiUrl } from '@solana/web3.js';
 import React, { useMemo } from 'react';
 import UseGumSDKProvider from '~/hooks/useGumSDKProvider';

@@ -1,5 +1,5 @@
 import { singleton } from 'tsyringe';
-import { makeObservable, observable, action, computed } from 'mobx';
+import { makeObservable, observable, action } from 'mobx';
 import { DialogueNode } from '~/viewmodels/DialogueGraph/DialogueNode';
 import router from 'next/router';
 import { Effects } from '~/lib/types/gameEffects';

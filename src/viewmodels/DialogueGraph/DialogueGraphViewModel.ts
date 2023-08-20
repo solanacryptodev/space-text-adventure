@@ -1,4 +1,4 @@
-import { action, autorun, computed, makeObservable, observable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 import { singleton } from 'tsyringe';
 import { DialogueData } from '~/lib/types/globalTypes';
 import { DialogueGraph } from '~/viewmodels/DialogueGraph/DialogueGraph';
