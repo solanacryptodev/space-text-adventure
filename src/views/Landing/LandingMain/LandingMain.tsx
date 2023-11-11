@@ -3,10 +3,9 @@ import { observer } from 'mobx-react-lite';
 import { WorldPreviewCard } from '~/components/common/cards/WorldPreviewCard';
 import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
 import { WorldImageCard } from '~/components/common/cards/WorldImageCard';
-import { demoPreviewCards, demoTextCards } from '~/lib/mockData';
+import { demoPreviewCards } from '~/lib/mockData';
 import { nanoid } from 'nanoid';
 import { WalletModel } from '~/models/Wallet/WalletModel';
-import { BasicTextCard } from '~/components/common/cards/BasicTextCard';
 import { useViewModel } from '../../../../reactReactive/viewmodels/useViewModel';
 
 export const LandingMain = observer((): JSX.Element => {
