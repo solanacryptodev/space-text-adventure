@@ -8,7 +8,7 @@ import { clone, get, hasIn, memoize, pull } from 'lodash';
 import { makeObservable, observable, runInAction } from 'mobx';
 
 import { DependencyService } from '../services/DependencyService';
-import { GlobalContextService } from '../services/GlobalContextService';
+import { GlobalScopeService } from '../services/GlobalContextService';
 
 const SHOULD_LOG_LIFE_CYCLE = false;
 
@@ -37,7 +37,7 @@ export abstract class LifeCycleObject implements ILifeCycleObject {
 
   protected constructor() {
     this._memoKey = this._id;
-    this._isSSR = GlobalContextService.Get().isSSR;
+    this._isSSR = GlobalScopeService.Return().isSSR;
     this.dependencies = new Array<any>();
 
     makeObservable(this, {

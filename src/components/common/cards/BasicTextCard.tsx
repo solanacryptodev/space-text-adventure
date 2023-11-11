@@ -5,9 +5,9 @@ import { TextCardProps } from '~/lib/types/globalTypes';
 export const BasicTextCard = observer(
   ({ cardHeader, cardBodyText }: TextCardProps): JSX.Element => {
     return (
-      <div className="flex-1 p-6 h-48 md:h-72 bg-[#BBC8DE] border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <div className="flex-1 p-4 md:p-6 h-auto bg-[#BBC8DE] border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 overflow-hidden">
         <a href="#">
-          <h5 className="mb-2 text-2xl font-bold tracking-wide text-gray-900 dark:text-white">
+          <h5 className="mb-2 text-base md:text-2xl font-bold tracking-wide text-gray-900 dark:text-white">
             {cardHeader}
           </h5>
         </a>
