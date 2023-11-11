@@ -5,7 +5,7 @@ import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 export const LandingHeaderView = observer((): JSX.Element => {
   return (
     <nav className="bg-[#1f2933] border-b border-[#151B25] px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50">
-      <div className="flex flex-wrap justify-between items-center">
+      <div className="flex justify-between items-center">
         <div className="flex justify-start items-center">
           <button
             data-drawer-target="drawer-navigation"
@@ -43,13 +43,13 @@ export const LandingHeaderView = observer((): JSX.Element => {
           </button>
           <a href="/" className="flex items-center justify-between mr-4">
             <img src="/genesys_realms_icon.jpeg" className="mr-3 h-8" alt="Genesys Realms Logo" />
-            <span className="font-lilita font-thin self-center text-2xl whitespace-nowrap text-[#FF7F50] dark:text-white">
+            <span className="font-lilita font-thin self-center lg:text-2xl whitespace-nowrap text-[#FF7F50] dark:text-white md:text-sm">
               Genesys Realms
             </span>
           </a>
           {/* Location of previous search bar  */}
         </div>
-        <WalletMultiButton style={{ backgroundColor: '#FF7F50' }} />
+        <WalletMultiButton style={{ backgroundColor: '#FF7F50', width: 'max-content' }} />
       </div>
     </nav>
   );

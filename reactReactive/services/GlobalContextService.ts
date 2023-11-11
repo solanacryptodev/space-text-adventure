@@ -1,8 +1,3 @@
-/**
- * Perhaps taking Single Responsibility to far, this object encapsulates the logic of
- * creating or retrieving an object that is attached to a "Global Context", which is Window or
- * globalThis depending on the environment
- */
 import { nanoid } from 'nanoid';
 import { get, set, keys } from 'lodash';
 
@@ -20,13 +15,13 @@ export interface Contextable {
   isSSR: boolean;
 }
 
-export class GlobalContextService implements Contextable {
+export class GlobalScopeService implements Contextable {
   isSSR = false;
 
   globalContext: any;
 
   // eslint-disable-next-line no-use-before-define
-  private static instance: GlobalContextService;
+  private static instance: GlobalScopeService;
 
   static readonly STATIC_CONTEXT_ID = nanoid(5);
   static readonly GLOBAL_CONTEXTS_ID = '__S_a_GlobalContextStore';
@@ -39,28 +34,25 @@ export class GlobalContextService implements Contextable {
 
     if (!isGlobalDefined && !isWindowDefined)
       throw new Error(
-        `${GlobalContextService.STATIC_CONTEXT_ID}; Unknown environment: Global is undefined and Window is undefined `
+        `${GlobalScopeService.STATIC_CONTEXT_ID}; Unknown environment: Global is undefined and Window is undefined `
       );
 
     this.globalContext = isWindowDefined ? window : global;
-    // TODO: @todo: for production, we should use STATIC_CONTEXT_ID
-    // but it's nice to have ta standard one in dev so we can easily get find it
-    // in the debugger
-    set(this.globalContext, GlobalContextService.GLOBAL_CONTEXTS_ID, this);
+    set(this.globalContext, GlobalScopeService.GLOBAL_CONTEXTS_ID, this);
     this.isSSR = !isWindowDefined;
   }
 
-  static Get(): GlobalContextService {
-    if (!GlobalContextService.instance) {
-      const gcs = GlobalContextService.Find<GlobalContextService>(
-        GlobalContextService.GLOBAL_CONTEXTS_ID
+  static Return(): GlobalScopeService {
+    if (!GlobalScopeService.instance) {
+      const gcs = GlobalScopeService.Search<GlobalScopeService>(
+        GlobalScopeService.GLOBAL_CONTEXTS_ID
       );
-      GlobalContextService.instance = gcs ?? new GlobalContextService();
+      GlobalScopeService.instance = gcs ?? new GlobalScopeService();
     }
-    return GlobalContextService.instance;
+    return GlobalScopeService.instance;
   }
 
-  protected static Find<T>(key: string): T {
+  protected static Search<T>(key: string): T {
     const isWindowDefined = typeof window !== 'undefined';
     const isGlobalDefined = typeof global !== 'undefined';
     if (isWindowDefined) return get(window, key);
@@ -70,12 +62,12 @@ export class GlobalContextService implements Contextable {
   }
 
   static FindInGlobal<T>(key: string): T | null {
-    const globalContextStore = GlobalContextService.Get();
+    const globalContextStore = GlobalScopeService.Return();
     return get(globalContextStore.globalContext, key);
   }
 
   static PutInGlobal<T>(key: string, obj: T): T {
-    const globalContextStore = GlobalContextService.Get();
+    const globalContextStore = GlobalScopeService.Return();
     set(globalContextStore.globalContext, key, obj);
     globalContextStore.objectsStored.push(key);
     if (obj && keys(obj).includes('isSSR')) {
@@ -88,15 +80,15 @@ export class GlobalContextService implements Contextable {
     return obj;
   }
 
-  static RemoveFromGlobal(key: string): void {
-    const globalContextStore = GlobalContextService.Get();
+  static RemoveFromGlobalScope(key: string): void {
+    const globalContextStore = GlobalScopeService.Return();
     set(globalContextStore.globalContext, key, null);
   }
 
   static RemoveAllFromGlobal(): void {
-    const globalContextStore = GlobalContextService.Get();
+    const globalContextStore = GlobalScopeService.Return();
     globalContextStore.objectsStored.forEach((objectName) => {
-      GlobalContextService.RemoveFromGlobal(objectName);
+      GlobalScopeService.RemoveFromGlobalScope(objectName);
     });
     globalContextStore.objectsStored = new Array<string>();
   }
@@ -106,7 +98,7 @@ export function FindOrCreateInGlobal<T extends Contextable>(
   key: string,
   creator: Injectable<T>
 ): T {
-  const { FindInGlobal, PutInGlobal } = GlobalContextService;
+  const { FindInGlobal, PutInGlobal } = GlobalScopeService;
   const instance = FindInGlobal<T>(key) ?? PutInGlobal(key, new creator());
   return instance;
 }

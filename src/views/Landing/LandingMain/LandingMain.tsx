@@ -22,7 +22,7 @@ export const LandingMain = observer((): JSX.Element => {
 
   return (
     <main className="p-4 md:ml-64 h-auto pt-20">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-7 mb-4">
         {demoPreviewCards.map((cards) => (
           <div
             key={nanoid()}
@@ -47,16 +47,16 @@ export const LandingMain = observer((): JSX.Element => {
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4 mb-3">
-        {demoTextCards.map((cardData) => (
-          <div
-            key={nanoid()}
-            className="flex items-center justify-center rounded-lg dark:border-gray-600 h-48 md:h-72"
-          >
-            <BasicTextCard cardHeader={cardData.cardHeader} cardBodyText={cardData.cardBodyText} />
-          </div>
-        ))}
-      </div>
+      {/* <div className="flex flex-col items-center justify-center rounded-lg dark:border-gray-600"> */}
+      {/*  {demoTextCards.map((cardData) => ( */}
+      {/*    <div */}
+      {/*      key={nanoid()} */}
+      {/*      className="flex items-center justify-center rounded-lg dark:border-gray-600 h-48 md:mb-12" */}
+      {/*    > */}
+      {/*      <BasicTextCard cardHeader={cardData.cardHeader} cardBodyText={cardData.cardBodyText} /> */}
+      {/*    </div> */}
+      {/*  ))} */}
+      {/* </div> */}
     </main>
   );
 });

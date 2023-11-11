@@ -2,17 +2,15 @@ import '@abraham/reflection';
 import { get, isFunction, memoize, set } from 'lodash';
 import { container, DependencyContainer, InjectionToken, Lifecycle } from 'tsyringe';
 import constructor from 'tsyringe/dist/typings/types/constructor';
-import { GlobalContextService } from './GlobalContextService';
-
-// TODO: deal with server vs client side context here
+import { GlobalScopeService } from './GlobalContextService';
 
 function getContainer(): DependencyContainer {
-  let globalContainer = GlobalContextService.FindInGlobal(
+  let globalContainer = GlobalScopeService.FindInGlobal(
     '__RK_Global_Container'
   ) as DependencyContainer;
   if (!globalContainer) {
     globalContainer = container;
-    GlobalContextService.PutInGlobal('__RK_Global_Container', globalContainer);
+    GlobalScopeService.PutInGlobal('__RK_Global_Container', globalContainer);
   }
   return globalContainer;
 }
@@ -20,15 +18,6 @@ function getContainer(): DependencyContainer {
 const globalContainer = memoize(getContainer);
 
 const _container = globalContainer();
-
-// function debugPrintContainer(): void {
-//   const map = get(_container, '_registry._registryMap') as Map<any, any>;
-//   map.forEach((value) => {
-//     console.log('obj: ', get(value[0], 'instance'));
-//   });
-// }
-//
-// if (!GlobalContextService.Get().isSSR) set(window, '__RK_printContainer', debugPrintContainer);
 
 export class DependencyService {
   static registerValue<T>(token: InjectionToken<T>, value: T): DependencyContainer {
